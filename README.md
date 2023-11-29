@@ -15,6 +15,8 @@ Simple application for sport club management
 - [ ] PDF
 - [ ] DVD
 
+Use [draw.io](https://app.diagrams.net/) to design and edit entity relationship diagram ([ER_Diagram.drawio](https://github.com/batuhannoz/sports-club-management/blob/main/ER_Diagram.drawio))
+
 ```bash
 docker run -d --name sql_server_demo -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=<Password1!>' -p 1433:1433 mcr.microsoft.com/mssql/server:2019-latest
 ```
