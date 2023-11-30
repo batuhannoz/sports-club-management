@@ -7,6 +7,7 @@ Simple application for sport club management
 - [x] Schema Diagram
 - [x] Min 4 Tables
 - [ ] Min 3 Triggers
+- [ ] Min 2 Stored Procedure
 - [ ] Export Results as pdf/doc/xls
 - [ ] Import Data From Files from txt/csv/xls
 - [ ] Authentication With Username and Password
