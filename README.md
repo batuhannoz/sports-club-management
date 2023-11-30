@@ -3,9 +3,9 @@ Simple application for sport club management
 
 ### Goals: 
 
-- [ ] Entity-Relationship Model
-- [ ] Schema Diagram
-- [ ] Min 4 Tables
+- [x] Entity-Relationship Model
+- [x] Schema Diagram
+- [x] Min 4 Tables
 - [ ] Min 3 Triggers
 - [ ] Export Results as pdf/doc/xls
 - [ ] Import Data From Files from txt/csv/xls
