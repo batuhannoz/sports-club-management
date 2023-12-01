@@ -6,7 +6,6 @@ USE [sports_club];
 CREATE LOGIN [admin] WITH PASSWORD = 'Password1!';
 CREATE USER [admin] FOR LOGIN [admin];
 ALTER ROLE [db_owner] ADD MEMBER [admin];
-GRANT SELECT, INSERT, UPDATE, DELETE ON * TO admin;
 
 CREATE TABLE [health_status] (
     [id] int PRIMARY KEY,
@@ -81,3 +80,6 @@ SELECT *
 FROM [user]
 WHERE [name] LIKE @key OR [surname] LIKE @key;
 GO;
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON * TO admin;
+
