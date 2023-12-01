@@ -1,8 +1,12 @@
 CREATE DATABASE sports_club
 GO
 
-USE sports_club
-GO
+USE [sports_club];
+
+CREATE LOGIN [admin] WITH PASSWORD = 'Password1!';
+CREATE USER [admin] FOR LOGIN [admin];
+ALTER ROLE [db_owner] ADD MEMBER [admin];
+GRANT SELECT, INSERT, UPDATE, DELETE ON * TO admin;
 
 CREATE TABLE [health_status] (
     [id] int PRIMARY KEY,
@@ -71,9 +75,9 @@ CREATE TABLE [subscription] (
 )
 GO
 
-CREATE TABLE [admin] (
-    [id] int PRIMARY KEY IDENTITY,
-    [name] varchar,
-    [password] varchar(50)
-)
-GO
+CREATE PROCEDURE FindCustomer @key nvarchar(50)
+AS
+SELECT *
+FROM [user]
+WHERE [name] LIKE @key OR [surname] LIKE @key;
+GO;
