@@ -1,9 +1,0 @@
-version: "3.7"
-
-services:
-  db:
-    build:
-      context: ./db
-      dockerfile: Dockerfile
-    ports:
-      - "1433:1433"
