@@ -8,11 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace app
+namespace app.user
 {
-    public partial class Login : Form
+    public partial class UserMenu : Form
     {
-        public Login()
+        public UserMenu()
         {
             InitializeComponent();
         }
