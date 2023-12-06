@@ -28,12 +28,31 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Text = "UserMenu";
+            btn_Profile = new Button();
+            SuspendLayout();
+            // 
+            // btn_Profile
+            // 
+            btn_Profile.Location = new Point(155, 59);
+            btn_Profile.Name = "btn_Profile";
+            btn_Profile.Size = new Size(116, 47);
+            btn_Profile.TabIndex = 0;
+            btn_Profile.Text = "Kullanıcı Bilgilerim";
+            btn_Profile.UseVisualStyleBackColor = true;
+            // 
+            // UserMenu
+            // 
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(444, 274);
+            Controls.Add(btn_Profile);
+            Name = "UserMenu";
+            Text = "UserMenu";
+            ResumeLayout(false);
         }
 
         #endregion
+
+        private Button btn_Profile;
     }
 }
