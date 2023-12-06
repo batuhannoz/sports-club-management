@@ -34,7 +34,7 @@
             // 
             // btn_Register
             // 
-            btn_Register.Location = new Point(121, 63);
+            btn_Register.Location = new Point(128, 62);
             btn_Register.Name = "btn_Register";
             btn_Register.Size = new Size(95, 33);
             btn_Register.TabIndex = 0;
@@ -44,7 +44,7 @@
             // 
             // btn_Login
             // 
-            btn_Login.Location = new Point(121, 102);
+            btn_Login.Location = new Point(128, 101);
             btn_Login.Name = "btn_Login";
             btn_Login.Size = new Size(95, 33);
             btn_Login.TabIndex = 1;
