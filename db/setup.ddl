@@ -9,29 +9,126 @@ CREATE USER [admin] FOR LOGIN [admin];
 ALTER ROLE [db_owner] ADD MEMBER [admin];
 GO
 
+-- permissions --
+CREATE TABLE [permissions] (
+    [id] int PRIMARY KEY IDENTITY,
+    [view_plans] bit,
+    [subscribe_plan] bit,
+    [unsubscribe_plan] bit,
+    [pay] bit,
+    [view_timetable] bit,
+    [update_health_status] bit,
+    [update_phone_number] bit,
+    [update_email] bit,
+    [update_password] bit,
+    [update_address] bit
+)
+GO
+
+CREATE TABLE [deleted_permissions] (
+    [id] int PRIMARY KEY,
+    [view_plans] bit,
+    [subscribe_plan] bit,
+    [unsubscribe_plan] bit,
+    [pay] bit,
+    [view_timetable] bit,
+    [update_health_status] bit,
+    [update_phone_number] bit,
+    [update_email] bit,
+    [update_password] bit,
+    [update_address] bit
+);
+GO
+
+CREATE TRIGGER [trg_permissions_deleted]
+ON [permissions]
+AFTER DELETE
+AS
+BEGIN
+    INSERT INTO deleted_permissions
+    SELECT
+    [id],
+    [view_plans],
+    [subscribe_plan],
+    [unsubscribe_plan],
+    [pay],
+    [view_timetable],
+    [update_health_status],
+    [update_phone_number],
+    [update_email],
+    [update_password],
+    [update_address]
+    FROM
+        [deleted];
+END;
+GO
+-- /permissions --
+
+-- profile --
+CREATE TABLE [profile] (
+    [id] int PRIMARY KEY IDENTITY,
+    [name] varchar(50),
+    [permissions_id] int,
+    CONSTRAINT fk_profile_permissions_id FOREIGN KEY (permissions_id) REFERENCES [permissions](id)
+)
+GO
+
+CREATE TABLE [deleted_profile] (
+    [id] int PRIMARY KEY,
+    [name] varchar(50),
+    [permissions_id] int,
+);
+GO
+
+CREATE TRIGGER [trg_permissions_deleted]
+ON [permissions]
+AFTER DELETE
+AS
+BEGIN
+    INSERT INTO deleted_permissions
+    SELECT
+    [id],
+    [view_plans],
+    [subscribe_plan],
+    [unsubscribe_plan],
+    [pay],
+    [view_timetable],
+    [update_health_status],
+    [update_phone_number],
+    [update_email],
+    [update_password],
+    [update_address]
+    FROM
+        [deleted];
+END;
+GO
+-- /profile --
+
+-- /user --
 CREATE TABLE [user] (
-    [id] integer PRIMARY KEY IDENTITY,
+    [id] int PRIMARY KEY IDENTITY,
     [name] varchar(50),
     [surname] nvarchar(50),
     [date_of_birth] date,
     CONSTRAINT ck_dob CHECK (date_of_birth <= getdate()),
-    [gender] char(1),
-    CONSTRAINT ck_gender CHECK (gender IN ('M', 'F')),
     [phone_number] varchar(15),
     [email] varchar(50),
+    CONSTRAINT ck_email CHECK (email LIKE '%_@__%.__%'),
     [password] varchar(50),
+    [profile_id] int,
+    CONSTRAINT fk_user_profile_id FOREIGN KEY (profile_id) REFERENCES [profile](id)
 )
 GO
 
 CREATE TABLE [deleted_users] (
-    [id] integer PRIMARY KEY,
+    [id] int PRIMARY KEY,
     [name] varchar(50),
     [surname] nvarchar(50),
     [date_of_birth] date,
-    [gender] char(1),
     [phone_number] varchar(15),
     [email] varchar(50),
-    [password] varchar(50)
+    [password] varchar(50),
+    [profile_id] int,
 );
 GO
 
@@ -46,15 +143,17 @@ BEGIN
         [name],
         [surname],
         [date_of_birth],
-        [gender],
         [phone_number],
         [email],
-        [password]
+        [password],
+        [profile_id]
     FROM
-        deleted;
+        [deleted];
 END;
 GO
+-- /user --
 
+-- health_status --
 CREATE TABLE [health_status] (
     [id] int PRIMARY KEY IDENTITY,
     [user_id] int,
@@ -87,7 +186,9 @@ BEGIN
         [deleted];
 END;
 GO
+-- /health_status --
 
+-- address --
 CREATE TABLE [address] (
     [id] int PRIMARY KEY IDENTITY,
     [user_id] int,
@@ -126,7 +227,9 @@ BEGIN
         [deleted];
 END;
 GO
+-- /address --
 
+-- plan --
 CREATE TABLE [plan] (
     [id] int PRIMARY KEY IDENTITY,
     [name] varchar(50),
@@ -165,7 +268,9 @@ BEGIN
         [deleted];
 END;
 GO
+-- /plan --
 
+-- timetable --
 CREATE TABLE [timetable] (
     [id] int PRIMARY KEY IDENTITY,
     [plan_id] int,
@@ -202,7 +307,9 @@ BEGIN
         [deleted];
 END;
 GO
+-- /timetable --
 
+-- subscription --
 CREATE TABLE [subscription] (
     [id] int PRIMARY KEY IDENTITY,
     [start_date] datetime,
@@ -242,6 +349,8 @@ BEGIN
         [deleted];
 END;
 GO
+-- /subscription --
+
 
 CREATE PROCEDURE GetUsersByKeyword @Keyword varchar(50)
 AS
