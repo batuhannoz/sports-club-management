@@ -1,6 +1,6 @@
 ﻿namespace app.user
 {
-    partial class PlansList
+    partial class Plans
     {
         /// <summary>
         /// Required designer variable.

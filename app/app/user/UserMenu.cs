@@ -16,5 +16,38 @@ namespace app.user
         {
             InitializeComponent();
         }
+
+        private void btn_Profile_Click(object sender, EventArgs e)
+        {
+            Form myForm = new Profile();
+            myForm.Show();
+            this.Hide();
+        }
+
+        private void btn_health_Click(object sender, EventArgs e)
+        {
+            Form myForm = new HealthStatus();
+            myForm.Show();
+            this.Hide();
+        }
+
+        private void btn_MyPlan_Click(object sender, EventArgs e)
+        {
+            Form myForm = new ActivePlan();
+            myForm.Show();
+            this.Hide();
+        }
+
+        private void btn_Plans_Click(object sender, EventArgs e)
+        {
+            Form myForm = new Plans();
+            myForm.Show();
+            this.Hide();
+        }
+
+        private void UserMenu_Load(object sender, EventArgs e)
+        {
+            lbl_Name.Text = $"Merhaba {Store.user.Name}";
+        }
     }
 }

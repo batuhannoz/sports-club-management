@@ -62,6 +62,9 @@ BEGIN
         [deleted];
 END;
 GO
+
+INSERT INTO [permissions]  VALUES (1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+GO
 -- /permissions --
 
 -- profile --
@@ -102,6 +105,9 @@ BEGIN
         [deleted];
 END;
 GO
+
+INSERT INTO [profile] VALUES ('user', 1)
+GO
 -- /profile --
 
 -- /user --
@@ -115,7 +121,7 @@ CREATE TABLE [user] (
     [email] varchar(50),
     CONSTRAINT ck_email CHECK (email LIKE '%_@__%.__%'),
     [password] varchar(50),
-    [profile_id] int,
+    [profile_id] int DEFAULT(1),
     CONSTRAINT fk_user_profile_id FOREIGN KEY (profile_id) REFERENCES [profile](id)
 )
 GO
@@ -351,7 +357,7 @@ END;
 GO
 -- /subscription --
 
-
+-- procedure --
 CREATE PROCEDURE GetUsersByKeyword @Keyword varchar(50)
 AS
 BEGIN
@@ -363,7 +369,64 @@ BEGIN
 END;
 GO
 
+CREATE PROCEDURE InsertUser
+    @name varchar(50),
+    @surname nvarchar(50),
+    @date_of_birth date,
+    @phone_number varchar(15),
+    @email varchar(50),
+    @password varchar(50)
+AS
+BEGIN
+    SET NOCOUNT ON;
 
+    INSERT INTO [user] (
+        [name],
+        [surname],
+        [date_of_birth],
+        [phone_number],
+        [email],
+        [password]
+    ) VALUES (
+        @name,
+        @surname,
+        @date_of_birth,
+        @phone_number,
+        @email,
+        @password
+    );
+END
+GO
+
+CREATE PROCEDURE UpdateUser
+    @id int,
+    @name varchar(50),
+    @surname nvarchar(50),
+    @date_of_birth date,
+    @phone_number varchar(15),
+    @email varchar(50),
+    @password varchar(50),
+    @profile_id int
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    UPDATE [user]
+    SET
+        [name] = @name,
+        [surname] = @surname,
+        [date_of_birth] = @date_of_birth,
+        [phone_number] = @phone_number,
+        [email] = @email,
+        [password] = @password,
+        [profile_id] = @profile_id
+    WHERE
+        [id] = @id;
+END
+GO
+-- /procedure --
+
+-- triggers --
 CREATE TRIGGER trg_health_status_update
 ON [health_status]
 INSTEAD OF UPDATE
@@ -375,3 +438,4 @@ BEGIN
     SELECT [user_id], [weight], [height]
     FROM INSERTED;
 END;
+-- /triggers --

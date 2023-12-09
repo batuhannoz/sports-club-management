@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace app.user
 {
-    public partial class ViewWeeklyProgram : Form
+    public partial class ActivePlan : Form
     {
-        public ViewWeeklyProgram()
+        public ActivePlan()
         {
             InitializeComponent();
         }

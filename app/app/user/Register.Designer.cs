@@ -33,7 +33,6 @@
             label_Surname = new Label();
             txtbox_Surname = new TextBox();
             label1 = new Label();
-            textBox2 = new TextBox();
             label2 = new Label();
             txtbox_PhoneNumber = new TextBox();
             label3 = new Label();
@@ -44,6 +43,7 @@
             txtbox_PasswordCheck = new TextBox();
             btn_Register = new Button();
             label_RegisterError = new Label();
+            dtPicker_dob = new DateTimePicker();
             SuspendLayout();
             // 
             // txtbox_Name
@@ -86,13 +86,6 @@
             label1.Size = new Size(84, 15);
             label1.TabIndex = 5;
             label1.Text = "Doğum Tarihi :";
-            // 
-            // textBox2
-            // 
-            textBox2.Location = new Point(142, 85);
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(138, 23);
-            textBox2.TabIndex = 4;
             // 
             // label2
             // 
@@ -166,21 +159,29 @@
             btn_Register.TabIndex = 14;
             btn_Register.Text = "Kayıt Ol";
             btn_Register.UseVisualStyleBackColor = true;
+            btn_Register.Click += btn_Register_Click;
             // 
             // label_RegisterError
             // 
-            label_RegisterError.AutoSize = true;
-            label_RegisterError.Location = new Point(142, 241);
+            label_RegisterError.Location = new Point(12, 241);
             label_RegisterError.Name = "label_RegisterError";
-            label_RegisterError.Size = new Size(63, 15);
+            label_RegisterError.Size = new Size(320, 15);
             label_RegisterError.TabIndex = 15;
-            label_RegisterError.Text = "Hata Yazısı";
+            label_RegisterError.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // dtPicker_dob
+            // 
+            dtPicker_dob.Location = new Point(142, 85);
+            dtPicker_dob.Name = "dtPicker_dob";
+            dtPicker_dob.Size = new Size(138, 23);
+            dtPicker_dob.TabIndex = 16;
             // 
             // Register
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(344, 329);
+            Controls.Add(dtPicker_dob);
             Controls.Add(label_RegisterError);
             Controls.Add(btn_Register);
             Controls.Add(label5);
@@ -192,7 +193,6 @@
             Controls.Add(label2);
             Controls.Add(txtbox_PhoneNumber);
             Controls.Add(label1);
-            Controls.Add(textBox2);
             Controls.Add(label_Surname);
             Controls.Add(txtbox_Surname);
             Controls.Add(label_Name);
@@ -210,7 +210,6 @@
         private Label label_Surname;
         private TextBox txtbox_Surname;
         private Label label1;
-        private TextBox textBox2;
         private Label label2;
         private TextBox txtbox_PhoneNumber;
         private Label label3;
@@ -221,5 +220,6 @@
         private TextBox txtbox_PasswordCheck;
         private Button btn_Register;
         private Label label_RegisterError;
+        private DateTimePicker dtPicker_dob;
     }
 }

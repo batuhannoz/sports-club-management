@@ -20,7 +20,7 @@ namespace app
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
-        public int ProfileID { get; set; }
+        public int ProfileId { get; set; }
     }
     public static class Store
     {
@@ -40,25 +40,48 @@ namespace app
             conn.Open();
         }
 
-        public static bool UserLogin(string Email, string Password)
+        public static bool UserLogin(string email, string password)
         {
-            SqlCommand cmd = new SqlCommand($"SELECT * FROM [user] WHERE email = '{Email}' AND password = '{Password}'", conn);
-            SqlDataReader dr = cmd.ExecuteReader();
-            int a = 0;
-            while (dr.Read())
-            {
-                user.Id = Convert.ToInt32(dr["id"]);
-                user.Name = Convert.ToString(dr["name"]);
-                user.Surname  = Convert.ToString(dr["surname"]);
-                user.DateOfBirth = Convert.ToDateTime(dr["date_of_birth"]);
-                user.PhoneNumber = Convert.ToString(dr["phone_number"]);
-                user.Email = Convert.ToString(dr["email"]);
-                user.Password = Convert.ToString(dr["password"]);
-                user.ProfileID = Convert.ToInt32(dr["profile_id"]);
-                Debug.WriteLine(user);
-                a++;
+            using (SqlCommand command = new SqlCommand("SELECT * FROM [user] WHERE [email] = @email AND [password] = @password", conn))
+                {
+                command.Parameters.AddWithValue("@email", email);
+                command.Parameters.AddWithValue("@password", password);
+
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        user.Id = reader.GetInt32(reader.GetOrdinal("id"));
+                        user.Name = reader.GetString(reader.GetOrdinal("name"));
+                        user.Surname = reader.GetString(reader.GetOrdinal("surname"));
+                        user.DateOfBirth = reader.GetDateTime(reader.GetOrdinal("date_of_birth"));
+                        user.PhoneNumber = reader.GetString(reader.GetOrdinal("phone_number"));
+                        user.Email = reader.GetString(reader.GetOrdinal("email"));
+                        user.Password = reader.GetString(reader.GetOrdinal("password"));
+                        user.ProfileId = reader.GetInt32(reader.GetOrdinal("profile_id"));
+
+                        return true;
+                    }
+                }
             }
-            return a == 1;
+            return false; 
+        }
+
+        public static void InsertUser(string name, string surname, DateTime dateOfBirth, string phoneNumber, string email, string password)
+        {
+            using (SqlCommand command = new SqlCommand("InsertUser", conn))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+
+                command.Parameters.AddWithValue("@name", name);
+                command.Parameters.AddWithValue("@surname", surname);
+                command.Parameters.AddWithValue("@date_of_birth", dateOfBirth);
+                command.Parameters.AddWithValue("@phone_number", phoneNumber);
+                command.Parameters.AddWithValue("@email", email);
+                command.Parameters.AddWithValue("@password", password);
+
+                command.ExecuteNonQuery();
+            }
         }
     }
 }
