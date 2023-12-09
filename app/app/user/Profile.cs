@@ -29,18 +29,15 @@ namespace app.user
                 )
             {
                 Store.UpdateUser(
-                    Store.user.Id
+                    Store.user.Id,
                     txtbox_Name.Text,
                     txtbox_Surname.Text,
                     dtPicker_dob.Value,
                     txtbox_PhoneNumber.Text,
                     txtbox_Email.Text,
-                    txtbox_Password.Text
+                    txtbox_Password.Text,
+                    Store.user.ProfileId
                      );
-                Store.UserLogin(txtbox_Email.Text, txtbox_Password.Text);
-                Form myForm = new UserMenu();
-                myForm.Show();
-                this.Hide();
             }
             else
             {
@@ -49,9 +46,50 @@ namespace app.user
             }
         }
 
-        private void label5_Click(object sender, EventArgs e)
+        private void Profile_Load(object sender, EventArgs e)
         {
+            txtbox_Name.Text = Store.user.Name;
+            txtbox_Surname.Text = Store.user.Surname;
+            dtPicker_dob.Value = Store.user.DateOfBirth;
+            txtbox_PhoneNumber.Text = Store.user.PhoneNumber;
+            txtbox_Email.Text = Store.user.Email;
+            txtbox_Password.Text = Store.user.Password;
 
+            Address address = Store.GetLatestAddressByUserId(Store.user.Id);
+            txtbox_City.Text = address.City;
+            txtbox_District.Text = address.District;
+            txtbox_Neighborhood.Text = address.Neighborhood;
+            txtbox_Street.Text = address.Street;
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            if (txtbox_City.Text != "" &&
+                txtbox_District.Text != "" &&
+                txtbox_Neighborhood.Text != "" &&
+                txtbox_Street.Text != ""
+                )
+            {
+                Store.InsertNewAddress(
+                    Store.user.Id,
+                    txtbox_City.Text,
+                    txtbox_District.Text,
+                    txtbox_Neighborhood.Text,
+                    txtbox_Street.Text
+                );
+            }
+            else
+            {
+                label_AddressError.Text = "Bilgileri tekrar kontrol ediniz";
+                return;
+            }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            Form myForm = new UserMenu();
+            myForm.Show();
+            this.Hide();
         }
     }
 }

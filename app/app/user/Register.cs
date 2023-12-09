@@ -30,7 +30,7 @@ namespace app
                 txtbox_Password.Text != "" &&
                 txtbox_Password.Text == txtbox_PasswordCheck.Text
                 )
-            {
+            {   
                 Store.Connect("sa", "Password1!");
                 Store.InsertUser(
                     txtbox_Name.Text,

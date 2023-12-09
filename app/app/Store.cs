@@ -22,6 +22,15 @@ namespace app
         public string Password { get; set; }
         public int ProfileId { get; set; }
     }
+
+    public struct Address
+    {
+        public string City { get; set; }
+        public string District { get; set; }
+        public string Neighborhood { get; set; }
+        public string Street { get; set; }
+    }
+
     public static class Store
     {
         public static SqlConnection conn;
@@ -82,6 +91,97 @@ namespace app
 
                 command.ExecuteNonQuery();
             }
+        }
+
+        public static void UpdateUser(int id, string name, string surname, DateTime dateOfBirth, string phoneNumber, string email, string password, int profileId)
+        { 
+            using (SqlCommand command = new SqlCommand("UpdateUser", conn))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+
+                // Add parameters to the stored procedure
+                command.Parameters.AddWithValue("@id", id);
+                command.Parameters.AddWithValue("@name", name);
+                command.Parameters.AddWithValue("@surname", surname);
+                command.Parameters.AddWithValue("@date_of_birth", dateOfBirth);
+                command.Parameters.AddWithValue("@phone_number", phoneNumber);
+                command.Parameters.AddWithValue("@email", email);
+                command.Parameters.AddWithValue("@password", password);
+                command.Parameters.AddWithValue("@profile_id", profileId);
+
+                command.ExecuteNonQuery(); 
+            }
+        }
+
+        public static Address GetLatestAddressByUserId(int userId)
+        {
+            Address latestAddress = new Address();
+            using (SqlCommand command = new SqlCommand("GetLatestAddressByUserId", conn))
+            {
+               command.CommandType = CommandType.StoredProcedure;
+               command.Parameters.AddWithValue("@user_id", userId);
+
+               using (SqlDataReader reader = command.ExecuteReader())
+               {
+
+                   if (reader.Read())
+                   {
+                        latestAddress.City = reader["city"].ToString();
+                        latestAddress.District = reader["district"].ToString();
+                        latestAddress.Neighborhood = reader["neighborhood"].ToString();
+                        latestAddress.Street = reader["street"].ToString();
+                    }
+               }
+            }
+            return latestAddress;
+        }
+
+        public static void InsertNewAddress(int userId, string city, string district, string neighborhood, string street)
+        {
+            using (SqlCommand command = new SqlCommand("InsertNewAddress", conn))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+
+                command.Parameters.AddWithValue("@user_id", userId);
+                command.Parameters.AddWithValue("@city", city);
+                command.Parameters.AddWithValue("@district", district);
+                command.Parameters.AddWithValue("@neighborhood", neighborhood);
+                command.Parameters.AddWithValue("@street", street);
+
+                command.ExecuteNonQuery();
+              
+            }
+        }
+
+        public static void InsertHealthStatus(int userId, int weight, int height)
+        {
+
+            using (SqlCommand command = new SqlCommand("InsertHealthStatus", conn))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+
+                command.Parameters.AddWithValue("@user_id", userId);
+                command.Parameters.AddWithValue("@weight", weight);
+                command.Parameters.AddWithValue("@height", height);
+                command.ExecuteNonQuery();
+            }
+        }
+
+        public static DataTable GetHealthRecords(int userId)
+        {
+            DataTable healthRecordsTable = new DataTable();
+            using (SqlCommand command = new SqlCommand("GetHealthRecordsByUserId", conn))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@user_id", userId);
+
+
+                using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                {
+                    adapter.Fill(healthRecordsTable);
+                }
+            }
+            return healthRecordsTable;
         }
     }
 }

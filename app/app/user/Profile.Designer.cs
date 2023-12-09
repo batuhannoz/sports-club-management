@@ -45,7 +45,7 @@
             label_Name = new Label();
             txtbox_Name = new TextBox();
             label9 = new Label();
-            txtbox_street = new TextBox();
+            txtbox_Street = new TextBox();
             label10 = new Label();
             label11 = new Label();
             txtbox_District = new TextBox();
@@ -53,7 +53,8 @@
             txtbox_City = new TextBox();
             txtbox_Neighborhood = new TextBox();
             label_UserError = new Label();
-            Label_AddressError = new Label();
+            label_AddressError = new Label();
+            button3 = new Button();
             SuspendLayout();
             // 
             // label1
@@ -94,6 +95,7 @@
             button2.TabIndex = 3;
             button2.Text = "Adress Bilgilerimi Güncelle";
             button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click;
             // 
             // dtPicker_dob
             // 
@@ -200,12 +202,12 @@
             label9.TabIndex = 37;
             label9.Text = "Sokak :";
             // 
-            // txtbox_street
+            // txtbox_Street
             // 
-            txtbox_street.Location = new Point(441, 160);
-            txtbox_street.Name = "txtbox_street";
-            txtbox_street.Size = new Size(159, 23);
-            txtbox_street.TabIndex = 36;
+            txtbox_Street.Location = new Point(441, 160);
+            txtbox_Street.Name = "txtbox_Street";
+            txtbox_Street.Size = new Size(159, 23);
+            txtbox_Street.TabIndex = 36;
             // 
             // label10
             // 
@@ -261,29 +263,37 @@
             label_UserError.Name = "label_UserError";
             label_UserError.Size = new Size(328, 15);
             label_UserError.TabIndex = 39;
-            label_UserError.Text = "Şifre :";
             label_UserError.TextAlign = ContentAlignment.MiddleCenter;
-            label_UserError.Click += label5_Click;
             // 
-            // Label_AddressError
+            // label_AddressError
             // 
-            Label_AddressError.Location = new Point(358, 270);
-            Label_AddressError.Name = "Label_AddressError";
-            Label_AddressError.Size = new Size(315, 15);
-            Label_AddressError.TabIndex = 40;
-            Label_AddressError.Text = "Şifre :";
-            Label_AddressError.TextAlign = ContentAlignment.MiddleCenter;
+            label_AddressError.Location = new Point(358, 270);
+            label_AddressError.Name = "label_AddressError";
+            label_AddressError.Size = new Size(315, 15);
+            label_AddressError.TabIndex = 40;
+            label_AddressError.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // button3
+            // 
+            button3.Location = new Point(12, 12);
+            button3.Name = "button3";
+            button3.Size = new Size(75, 23);
+            button3.TabIndex = 41;
+            button3.Text = "Ana Menü";
+            button3.UseVisualStyleBackColor = true;
+            button3.Click += button3_Click;
             // 
             // Profile
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(685, 393);
-            Controls.Add(Label_AddressError);
+            Controls.Add(button3);
+            Controls.Add(label_AddressError);
             Controls.Add(label_UserError);
             Controls.Add(txtbox_Neighborhood);
             Controls.Add(label9);
-            Controls.Add(txtbox_street);
+            Controls.Add(txtbox_Street);
             Controls.Add(label10);
             Controls.Add(label11);
             Controls.Add(txtbox_District);
@@ -307,6 +317,7 @@
             Controls.Add(label1);
             Name = "Profile";
             Text = "Profile";
+            Load += Profile_Load;
             ResumeLayout(false);
             PerformLayout();
         }
@@ -330,7 +341,7 @@
         private Label label_Name;
         private TextBox txtbox_Name;
         private Label label9;
-        private TextBox txtbox_street;
+        private TextBox txtbox_Street;
         private Label label10;
         private Label label11;
         private TextBox txtbox_District;
@@ -338,6 +349,7 @@
         private TextBox txtbox_City;
         private TextBox txtbox_Neighborhood;
         private Label label_UserError;
-        private Label Label_AddressError;
+        private Label label_AddressError;
+        private Button button3;
     }
 }

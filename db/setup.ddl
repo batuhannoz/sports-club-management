@@ -165,15 +165,17 @@ CREATE TABLE [health_status] (
     [user_id] int,
     CONSTRAINT fk_health_status_user_id FOREIGN KEY (user_id) REFERENCES [user](id) ON DELETE CASCADE,
     [weight] int,
-    [height] int
-)
+    [height] int,
+    [measurement_day] datetime DEFAULT(getdate())
+);
 GO
 
 CREATE TABLE [deleted_health_status] (
     [id] int PRIMARY KEY,
     [user_id] int,
     [weight] int,
-    [height] int
+    [height] int,
+    [measurement_day] datetime
 );
 GO
 
@@ -187,7 +189,8 @@ BEGIN
         [id],
         [user_id],
         [weight],
-        [height]
+        [height],
+        [measurement_day]
     FROM
         [deleted];
 END;
@@ -395,7 +398,7 @@ BEGIN
         @email,
         @password
     );
-END
+END;
 GO
 
 CREATE PROCEDURE UpdateUser
@@ -422,7 +425,75 @@ BEGIN
         [profile_id] = @profile_id
     WHERE
         [id] = @id;
-END
+END;
+GO
+
+CREATE PROCEDURE GetLatestAddressByUserId
+    @user_id int
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT TOP 1
+        [city],
+        [district],
+        [neighborhood],
+        [street]
+    FROM
+        [address]
+    WHERE
+        [user_id] = @user_id
+    ORDER BY
+        [id] DESC;
+END;
+GO
+
+CREATE PROCEDURE InsertNewAddress
+    @user_id int,
+    @city varchar(50),
+    @district varchar(50),
+    @neighborhood varchar(50),
+    @street varchar(50)
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO [address] ([user_id], [city], [district], [neighborhood], [street])
+    VALUES (@user_id, @city, @district, @neighborhood, @street);
+END;
+GO
+
+CREATE PROCEDURE InsertHealthStatus
+    @user_id int,
+    @weight int,
+    @height int
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO [health_status] ([user_id], [weight], [height])
+    VALUES (@user_id, @weight, @height);
+END;
+GO
+
+CREATE PROCEDURE GetHealthRecordsByUserId
+    @user_id int
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT
+        [id],
+        [weight],
+        [height],
+        [measurement_day]
+    FROM
+        [health_status]
+    WHERE
+        [user_id] = @user_id
+    ORDER BY
+        [measurement_day] DESC;
+END;
 GO
 -- /procedure --
 
