@@ -36,6 +36,7 @@
             label2 = new Label();
             num_Height = new NumericUpDown();
             num_Weight = new NumericUpDown();
+            button3 = new Button();
             ((System.ComponentModel.ISupportInitialize)dgv_HealthRecords).BeginInit();
             ((System.ComponentModel.ISupportInitialize)num_Height).BeginInit();
             ((System.ComponentModel.ISupportInitialize)num_Weight).BeginInit();
@@ -89,7 +90,7 @@
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 162);
-            label2.Location = new Point(82, 33);
+            label2.Location = new Point(82, 67);
             label2.Name = "label2";
             label2.Size = new Size(140, 30);
             label2.TabIndex = 41;
@@ -111,11 +112,22 @@
             num_Weight.Size = new Size(151, 23);
             num_Weight.TabIndex = 53;
             // 
+            // button3
+            // 
+            button3.Location = new Point(12, 12);
+            button3.Name = "button3";
+            button3.Size = new Size(75, 23);
+            button3.TabIndex = 54;
+            button3.Text = "Ana Menü";
+            button3.UseVisualStyleBackColor = true;
+            button3.Click += button3_Click;
+            // 
             // HealthStatus
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(683, 450);
+            Controls.Add(button3);
             Controls.Add(num_Weight);
             Controls.Add(num_Height);
             Controls.Add(label_Error);
@@ -144,5 +156,6 @@
         private Label label2;
         private NumericUpDown num_Height;
         private NumericUpDown num_Weight;
+        private Button button3;
     }
 }

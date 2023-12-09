@@ -40,11 +40,18 @@ namespace app.user
             {
                 Store.InsertHealthStatus(Store.user.Id, Convert.ToInt32(num_Weight.Value), Convert.ToInt32(num_Height.Value));
                 UpdateHealthView();
-            } 
+            }
             else
             {
                 label_Error.Text = "Girilen Bilgileri Kontrol Ediniz";
             }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            Form myForm = new UserMenu();
+            myForm.Show();
+            this.Hide();
         }
     }
 }
