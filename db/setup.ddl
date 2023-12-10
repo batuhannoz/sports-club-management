@@ -83,24 +83,16 @@ CREATE TABLE [deleted_profile] (
 );
 GO
 
-CREATE TRIGGER [trg_permissions_deleted]
-ON [permissions]
+CREATE TRIGGER [trg_permissions_profile]
+ON [profile]
 AFTER DELETE
 AS
 BEGIN
-    INSERT INTO deleted_permissions
+    INSERT INTO deleted_profile
     SELECT
     [id],
-    [view_plans],
-    [subscribe_plan],
-    [unsubscribe_plan],
-    [pay],
-    [view_timetable],
-    [update_health_status],
-    [update_phone_number],
-    [update_email],
-    [update_password],
-    [update_address]
+    [name],
+    [permissions_id]
     FROM
         [deleted];
 END;
@@ -493,6 +485,69 @@ BEGIN
         [user_id] = @user_id
     ORDER BY
         [measurement_day] DESC;
+END;
+GO
+
+CREATE PROCEDURE GetSubscriptionInfoByUserId
+    @user_id int
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DECLARE @subscription_id int;
+
+    -- Check if there is an active subscription for the user
+    SELECT TOP 1
+        @subscription_id = [id]
+    FROM
+        [subscription]
+    WHERE
+        [user_id] = @user_id
+        AND [expire_date] > GETDATE()
+        AND [start_date] <= GETDATE()
+    ORDER BY
+        [start_date] DESC;
+
+    IF @subscription_id IS NOT NULL
+    BEGIN
+        -- Return subscription details
+        SELECT
+            [id],
+            [start_date],
+            [expire_date],
+            [next_pay_date],
+            [user_id],
+            [plan_id]
+        FROM
+            [subscription]
+        WHERE
+            [id] = @subscription_id;
+    END
+    ELSE
+    BEGIN
+        -- Throw an error if no active subscription is found
+        raiserror('No active subscription found for the user.', 16, 1);
+    END
+END;
+GO
+
+CREATE PROCEDURE GetPlanById
+    @plan_id int
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT
+        [id],
+        [name],
+        [description],
+        [price],
+        [type],
+        [status]
+    FROM
+        [plan]
+    WHERE
+        [id] = @plan_id;
 END;
 GO
 -- /procedure --

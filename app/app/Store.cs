@@ -31,6 +31,26 @@ namespace app
         public string Street { get; set; }
     }
 
+    public struct SubscriptionInfo
+    {
+        public int Id { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime ExpireDate { get; set; }
+        public DateTime NextPayDate { get; set; }
+        public int UserId { get; set; }
+        public int PlanId { get; set; }
+    }
+
+    public struct PlanInfo
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public decimal Price { get; set; }
+        public string Type { get; set; }
+        public string Status { get; set; }
+    }
+
     public static class Store
     {
         public static SqlConnection conn;
@@ -182,6 +202,67 @@ namespace app
                 }
             }
             return healthRecordsTable;
+        }
+
+        public static SubscriptionInfo GetSubscriptionInfoByUserId(int userId)
+        {
+            using (SqlCommand command = new SqlCommand("GetSubscriptionInfoByUserId", conn))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@user_id", userId);
+
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        return new SubscriptionInfo
+                        {
+                            Id = reader.GetInt32(reader.GetOrdinal("id")),
+                            StartDate = reader.GetDateTime(reader.GetOrdinal("start_date")),
+                            ExpireDate = reader.GetDateTime(reader.GetOrdinal("expire_date")),
+                            NextPayDate = reader.GetDateTime(reader.GetOrdinal("next_pay_date")),
+                            UserId = reader.GetInt32(reader.GetOrdinal("user_id")),
+                            PlanId = reader.GetInt32(reader.GetOrdinal("plan_id"))
+                        };
+                    }
+                    else
+                    {
+                        throw new Exception("No active subscription found for the user.");
+                    }
+                }
+            }
+        }
+
+        public static PlanInfo GetPlanById(string connectionString, int planId)
+        {
+
+
+                using (SqlCommand command = new SqlCommand("GetPlanById", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@plan_id", planId);
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            return new PlanInfo
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("id")),
+                                Name = reader.GetString(reader.GetOrdinal("name")),
+                                Description = reader.GetString(reader.GetOrdinal("description")),
+                                Price = reader.GetDecimal(reader.GetOrdinal("price")),
+                                Type = reader.GetString(reader.GetOrdinal("type")),
+                                Status = reader.GetString(reader.GetOrdinal("status"))
+                            };
+                        }
+                        else
+                        {
+                            throw new Exception("No plan found for the specified plan ID.");
+                        }
+                    }
+                }
+            
         }
     }
 }

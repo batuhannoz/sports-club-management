@@ -33,7 +33,6 @@
             label11 = new Label();
             label12 = new Label();
             button2 = new Button();
-            label2 = new Label();
             num_Height = new NumericUpDown();
             num_Weight = new NumericUpDown();
             button3 = new Button();
@@ -86,16 +85,6 @@
             button2.UseVisualStyleBackColor = true;
             button2.Click += button2_Click;
             // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 162);
-            label2.Location = new Point(82, 67);
-            label2.Name = "label2";
-            label2.Size = new Size(140, 30);
-            label2.TabIndex = 41;
-            label2.Text = "Sağlık Bilgileri";
-            // 
             // num_Height
             // 
             num_Height.Location = new Point(82, 156);
@@ -134,7 +123,6 @@
             Controls.Add(label11);
             Controls.Add(label12);
             Controls.Add(button2);
-            Controls.Add(label2);
             Controls.Add(dgv_HealthRecords);
             Name = "HealthStatus";
             Text = "HealthStatus";
@@ -153,7 +141,6 @@
         private Label label11;
         private Label label12;
         private Button button2;
-        private Label label2;
         private NumericUpDown num_Height;
         private NumericUpDown num_Weight;
         private Button button3;

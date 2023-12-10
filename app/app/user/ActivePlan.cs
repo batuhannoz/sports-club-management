@@ -16,5 +16,22 @@ namespace app.user
         {
             InitializeComponent();
         }
+
+        private void ActivePlan_Load(object sender, EventArgs e)
+        {
+            try
+            {
+                SubscriptionInfo subInfo =  Store.GetSubscriptionInfoByUserId(Store.user.Id);
+                lbl_NextPayDate.Text = $"{subInfo.NextPayDate}";
+                lbl_PlanStartDate.Text = $"{subInfo.StartDate}";
+                Store.GetPlanById(subInfo.PlanId);
+
+            }
+            catch (Exception ex) 
+            {
+                // TODO no active subscription
+                return;
+            }
+        }
     }
 }
