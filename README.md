@@ -6,12 +6,12 @@ Simple application for sport club management
 - [x] Entity-Relationship Model
 - [x] Schema Diagram
 - [x] Min 4 Tables
-- [ ] Min 3 Triggers
-- [ ] Min 2 Stored Procedure
-- [ ] Export Results as pdf/doc/xls
+- [x] Min 3 Triggers
+- [x] Min 2 Stored Procedure
+- [x] Export Results as pdf/doc/xls
 - [ ] Import Data From Files from txt/csv/xls
-- [ ] Authentication With Username and Password
-- [ ] User Identification and Authorization (Read/Enter/Update/Delete) with Admin User
+- [x] Authentication With Username and Password
+- [x] User Identification and Authorization (Read/Enter/Update/Delete) with Admin User
 - [ ] Back up & Restore DB
 - [ ] PDF
 - [ ] DVD
