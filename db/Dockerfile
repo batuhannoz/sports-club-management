@@ -6,6 +6,8 @@ ENV MSSQL_PID=Developer
 
 EXPOSE 1433
 
+VOLUME C:/Users/Batuhan/Documents/Sql-Server-Backups /backups
+
 WORKDIR /src
 COPY setup.ddl ./setup.ddl
 COPY data.dml ./data.dml

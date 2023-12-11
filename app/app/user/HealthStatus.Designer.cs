@@ -50,7 +50,7 @@
             dgv_HealthRecords.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgv_HealthRecords.Location = new Point(294, 12);
             dgv_HealthRecords.Name = "dgv_HealthRecords";
-            dgv_HealthRecords.Size = new Size(372, 426);
+            dgv_HealthRecords.Size = new Size(360, 426);
             dgv_HealthRecords.TabIndex = 0;
             // 
             // label_Error
@@ -129,7 +129,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(683, 450);
+            ClientSize = new Size(669, 450);
             Controls.Add(button1);
             Controls.Add(button3);
             Controls.Add(num_Weight);

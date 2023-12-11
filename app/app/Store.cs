@@ -344,5 +344,40 @@ namespace app
                 command.ExecuteNonQuery();
             }
         }
+
+        public static void RestoreDatabase(string filePath)
+        {
+            try
+            {
+                string restoreQuery = $"USE master; RESTORE DATABASE sports_club FROM DISK = '{filePath}' WITH REPLACE";
+
+                using (SqlCommand command = new SqlCommand(restoreQuery, conn))
+                {
+                    command.ExecuteNonQuery();
+                }
+                
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Hata oluştu: " + ex.Message, "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        public static void BackupDatabase(string filePath)
+        {
+            try
+            {
+                string backupQuery = $"BACKUP DATABASE sports_club TO DISK = '{filePath}'";
+
+                using (SqlCommand command = new SqlCommand(backupQuery, conn))
+                {
+                    command.ExecuteNonQuery();
+                }          
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Hata oluştu: " + ex.Message, "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
     }
 }

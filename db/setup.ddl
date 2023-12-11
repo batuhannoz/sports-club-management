@@ -640,3 +640,5 @@ BEGIN
     FROM INSERTED;
 END;
 -- /triggers --
+
+ALTER ROLE [sysadmin] ADD MEMBER [admin];

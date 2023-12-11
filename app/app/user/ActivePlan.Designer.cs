@@ -446,7 +446,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(771, 328);
+            ClientSize = new Size(754, 328);
             Controls.Add(lbl_NextPayDate);
             Controls.Add(lbl_PlanStartDate);
             Controls.Add(label14);

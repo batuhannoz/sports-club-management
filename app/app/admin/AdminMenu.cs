@@ -1,4 +1,5 @@
-﻿using System;
+﻿using app.user;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -15,6 +16,23 @@ namespace app.admin
         public AdminMenu()
         {
             InitializeComponent();
+        }
+
+        private void btn_UsersProfiles_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void btn_BackUpRestore_Click(object sender, EventArgs e)
+        {
+            Form myForm = new BackUpRestoreMenu();
+            myForm.Show();
+            this.Hide();
+        }
+
+        private void btn_Plan_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
