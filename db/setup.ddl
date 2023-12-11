@@ -550,6 +550,81 @@ BEGIN
         [id] = @plan_id;
 END;
 GO
+
+CREATE PROCEDURE GetWeeklyTimetableByPlanId
+    @plan_id int
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT
+        [id],
+        [plan_id],
+        [week_day],
+        [start_time],
+        [end_time]
+    FROM
+        [timetable]
+    WHERE
+        [plan_id] = @plan_id;
+END;
+GO
+
+CREATE PROCEDURE DelayNextPayDateByOneMonth
+    @user_id int
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    UPDATE [subscription]
+    SET [next_pay_date] = DATEADD(MONTH, 1, [next_pay_date])
+    WHERE [user_id] = @user_id;
+END;
+GO
+
+CREATE PROCEDURE UnsubscribeUser
+    @user_id int
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DELETE FROM [subscription]
+    WHERE [user_id] = @user_id;
+END;
+GO
+
+CREATE PROCEDURE GetActivePlans
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT
+        [id],
+        [name],
+        [description],
+        [price],
+        [type],
+        [status]
+    FROM
+        [plan]
+    WHERE
+        [status] = 'active';
+END;
+GO
+
+CREATE PROCEDURE StartNewSubscription
+    @user_id int,
+    @plan_id int
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DECLARE @currentDate datetime = GETDATE();
+
+    INSERT INTO [subscription] ([start_date], [expire_date], [next_pay_date], [user_id], [plan_id])
+    VALUES (@currentDate, DATEADD(YEAR, 1, @currentDate), DATEADD(MONTH, 1, @currentDate), @user_id, @plan_id);
+END;
+GO
 -- /procedure --
 
 -- triggers --

@@ -112,6 +112,7 @@
             btn_Pay.TabIndex = 4;
             btn_Pay.Text = "Ödeme Yap";
             btn_Pay.UseVisualStyleBackColor = true;
+            btn_Pay.Click += btn_Pay_Click;
             // 
             // btn_Unsubscribe
             // 
@@ -121,6 +122,7 @@
             btn_Unsubscribe.TabIndex = 5;
             btn_Unsubscribe.Text = "Abonelikten Çık";
             btn_Unsubscribe.UseVisualStyleBackColor = true;
+            btn_Unsubscribe.Click += btn_Unsubscribe_Click;
             // 
             // label1
             // 
@@ -400,6 +402,7 @@
             button3.TabIndex = 55;
             button3.Text = "Ana Menü";
             button3.UseVisualStyleBackColor = true;
+            button3.Click += button3_Click;
             // 
             // label17
             // 

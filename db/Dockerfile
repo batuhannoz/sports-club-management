@@ -8,6 +8,10 @@ EXPOSE 1433
 
 WORKDIR /src
 COPY setup.ddl ./setup.ddl
+COPY data.dml ./data.dml
 
 RUN (/opt/mssql/bin/sqlservr --accept-eula & ) | grep -q "Service Broker manager has started" &&  \
     /opt/mssql-tools/bin/sqlcmd -S127.0.0.1 -U sa -P Password1! -i setup.ddl
+
+RUN (/opt/mssql/bin/sqlservr --accept-eula & ) | grep -q "Service Broker manager has started" &&  \
+    /opt/mssql-tools/bin/sqlcmd -S127.0.0.1 -U sa -P Password1! -i data.dml

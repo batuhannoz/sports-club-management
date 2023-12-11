@@ -51,6 +51,15 @@ namespace app
         public string Status { get; set; }
     }
 
+    public struct TimetableInfo
+    {
+        public int Id { get; set; }
+        public int PlanId { get; set; }
+        public byte WeekDay { get; set; }
+        public TimeSpan StartTime { get; set; }
+        public TimeSpan EndTime { get; set; }
+    }
+
     public static class Store
     {
         public static SqlConnection conn;
@@ -233,36 +242,107 @@ namespace app
             }
         }
 
-        public static PlanInfo GetPlanById(string connectionString, int planId)
+        public static PlanInfo GetPlanById(int planId)
         {
+            using (SqlCommand command = new SqlCommand("GetPlanById", conn))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@plan_id", planId);
 
-
-                using (SqlCommand command = new SqlCommand("GetPlanById", connection))
+                using (SqlDataReader reader = command.ExecuteReader())
                 {
-                    command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("@plan_id", planId);
-
-                    using (SqlDataReader reader = command.ExecuteReader())
+                    if (reader.Read())
                     {
-                        if (reader.Read())
+                        return new PlanInfo
                         {
-                            return new PlanInfo
-                            {
-                                Id = reader.GetInt32(reader.GetOrdinal("id")),
-                                Name = reader.GetString(reader.GetOrdinal("name")),
-                                Description = reader.GetString(reader.GetOrdinal("description")),
-                                Price = reader.GetDecimal(reader.GetOrdinal("price")),
-                                Type = reader.GetString(reader.GetOrdinal("type")),
-                                Status = reader.GetString(reader.GetOrdinal("status"))
-                            };
-                        }
-                        else
-                        {
-                            throw new Exception("No plan found for the specified plan ID.");
-                        }
+                            Id = reader.GetInt32(reader.GetOrdinal("id")),
+                            Name = reader.GetString(reader.GetOrdinal("name")),
+                            Description = reader.GetString(reader.GetOrdinal("description")),
+                            Price = reader.GetDecimal(reader.GetOrdinal("price")),
+                            Type = reader.GetString(reader.GetOrdinal("type")),
+                            Status = reader.GetString(reader.GetOrdinal("status"))
+                        };
+                    }
+                    else
+                    {
+                        throw new Exception("No plan found for the specified plan ID.");
                     }
                 }
-            
+            }
+        }
+
+        public static List<TimetableInfo> GetWeeklyTimetableByPlanId(int planId)
+        {
+            List<TimetableInfo> timetable = new List<TimetableInfo>();
+
+            using (SqlCommand command = new SqlCommand("GetWeeklyTimetableByPlanId", conn))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@plan_id", planId);
+
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        timetable.Add(new TimetableInfo
+                        {
+                            Id = reader.GetInt32(reader.GetOrdinal("id")),
+                            PlanId = reader.GetInt32(reader.GetOrdinal("plan_id")),
+                            WeekDay = reader.GetByte(reader.GetOrdinal("week_day")),
+                            StartTime = reader.GetTimeSpan(reader.GetOrdinal("start_time")),
+                            EndTime = reader.GetTimeSpan(reader.GetOrdinal("end_time"))
+                        });
+                    }
+                }
+            }
+            return timetable;
+        }
+        public static void DelayNextPayDateByOneMonth(int userId)
+        {
+            using (SqlCommand command = new SqlCommand("DelayNextPayDateByOneMonth", conn))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@user_id", userId);
+
+                command.ExecuteNonQuery();
+            }
+        }
+        public static void UnsubscribeUser(int userId)
+        {
+            using (SqlCommand command = new SqlCommand("UnsubscribeUser", conn))
+            {
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@user_id", userId);
+
+                command.ExecuteNonQuery();
+            }
+        }
+
+        public static DataTable GetActivePlans()
+        {
+            DataTable activePlans = new DataTable();
+
+            using (SqlCommand command = new SqlCommand("GetActivePlans", conn))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+
+                using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                {
+                    adapter.Fill(activePlans);
+                }
+            }
+            return activePlans;
+        }
+        public static void StartNewSubscription(int userId, int planId)
+        {
+            using (SqlCommand command = new SqlCommand("StartNewSubscription", conn))
+            {
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@user_id", userId);
+                command.Parameters.AddWithValue("@plan_id", planId);
+
+                command.ExecuteNonQuery();
+            }
         }
     }
 }

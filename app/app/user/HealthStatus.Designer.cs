@@ -36,6 +36,7 @@
             num_Height = new NumericUpDown();
             num_Weight = new NumericUpDown();
             button3 = new Button();
+            button1 = new Button();
             ((System.ComponentModel.ISupportInitialize)dgv_HealthRecords).BeginInit();
             ((System.ComponentModel.ISupportInitialize)num_Height).BeginInit();
             ((System.ComponentModel.ISupportInitialize)num_Weight).BeginInit();
@@ -43,6 +44,9 @@
             // 
             // dgv_HealthRecords
             // 
+            dgv_HealthRecords.AllowUserToAddRows = false;
+            dgv_HealthRecords.AllowUserToDeleteRows = false;
+            dgv_HealthRecords.AllowUserToOrderColumns = true;
             dgv_HealthRecords.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgv_HealthRecords.Location = new Point(294, 12);
             dgv_HealthRecords.Name = "dgv_HealthRecords";
@@ -77,7 +81,7 @@
             // 
             // button2
             // 
-            button2.Location = new Point(108, 258);
+            button2.Location = new Point(108, 249);
             button2.Name = "button2";
             button2.Size = new Size(89, 34);
             button2.TabIndex = 42;
@@ -111,11 +115,22 @@
             button3.UseVisualStyleBackColor = true;
             button3.Click += button3_Click;
             // 
+            // button1
+            // 
+            button1.Location = new Point(108, 311);
+            button1.Name = "button1";
+            button1.Size = new Size(89, 32);
+            button1.TabIndex = 55;
+            button1.Text = "Verileri Kaydet";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
+            // 
             // HealthStatus
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(683, 450);
+            Controls.Add(button1);
             Controls.Add(button3);
             Controls.Add(num_Weight);
             Controls.Add(num_Height);
@@ -144,5 +159,6 @@
         private NumericUpDown num_Height;
         private NumericUpDown num_Weight;
         private Button button3;
+        private Button button1;
     }
 }
