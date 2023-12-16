@@ -22,7 +22,16 @@ namespace app.user
 
         private void ActivePlan_Load(object sender, EventArgs e)
         {
-            // TODO hide buttons depends on permissions
+            if (!Store.permissions.UnsubscribePlan)
+            {
+                btn_Unsubscribe.Hide();
+            }
+
+            if (!Store.permissions.Pay)
+            {
+                btn_Pay.Hide();
+            }
+
             try
             {
                 subInfo = Store.GetSubscriptionInfoByUserId(Store.user.Id);
@@ -35,22 +44,25 @@ namespace app.user
                 lbl_PlanPrice.Text = $"{planInfo.Price}";
                 lbl_PlanType.Text = $"{planInfo.Type}";
 
-                timetable = Store.GetWeeklyTimetableByPlanId(subInfo.PlanId);
-                timetable = timetable.OrderBy(entry => entry.WeekDay).ToList();
-
-                for (int dayOfWeek = 0; dayOfWeek <= 6; dayOfWeek++)
+                if (!Store.permissions.ViewTimetable)
                 {
-                    // Kullanılacak günün başlangıç ve bitiş saatlerini al
-                    string startTime = $"{timetable[dayOfWeek].StartTime}";
-                    string endTime = $"{timetable[dayOfWeek].EndTime}";
+                    timetable = Store.GetWeeklyTimetableByPlanId(subInfo.PlanId);
+                    timetable = timetable.OrderBy(entry => entry.WeekDay).ToList();
 
-                    // Günün adını al (0: Pazartesi, 1: Salı, ..., 6: Pazar)
-                    string dayName = Enum.GetName(typeof(DayOfWeek), dayOfWeek);
+                    for (int dayOfWeek = 0; dayOfWeek <= 6; dayOfWeek++)
+                    {
+                        // Kullanılacak günün başlangıç ve bitiş saatlerini al
+                        string startTime = $"{timetable[dayOfWeek].StartTime}";
+                        string endTime = $"{timetable[dayOfWeek].EndTime}";
 
-                    // Label'ları güncelle
-                    Controls.Find($"lbl_{dayName}Start", true)[0].Text = startTime;
-                    Controls.Find($"lbl_{dayName}End", true)[0].Text = endTime;
-                }
+                        // Günün adını al (0: Pazartesi, 1: Salı, ..., 6: Pazar)
+                        string dayName = Enum.GetName(typeof(DayOfWeek), dayOfWeek);
+
+                        // Label'ları güncelle
+                        Controls.Find($"lbl_{dayName}Start", true)[0].Text = startTime;
+                        Controls.Find($"lbl_{dayName}End", true)[0].Text = endTime;
+                    }
+                }               
             }
             catch (Exception ex)
             {

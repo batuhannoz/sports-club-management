@@ -625,6 +625,39 @@ BEGIN
     VALUES (@currentDate, DATEADD(YEAR, 1, @currentDate), DATEADD(MONTH, 1, @currentDate), @user_id, @plan_id);
 END;
 GO
+
+CREATE PROCEDURE GetPermissionDetailsByProfileId
+    @profile_id int
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DECLARE @permissions_id int;
+
+    -- Get permissions_id from the profile record
+    SELECT @permissions_id = [permissions_id]
+    FROM [profile]
+    WHERE [id] = @profile_id;
+
+    -- Get permission details based on permissions_id
+    SELECT
+        [id],
+        [view_plans],
+        [subscribe_plan],
+        [unsubscribe_plan],
+        [pay],
+        [view_timetable],
+        [update_health_status],
+        [update_phone_number],
+        [update_email],
+        [update_password],
+        [update_address]
+    FROM
+        [permissions]
+    WHERE
+        [id] = @permissions_id;
+END;
+GO
 -- /procedure --
 
 -- triggers --
@@ -641,4 +674,4 @@ BEGIN
 END;
 -- /triggers --
 
-ALTER ROLE [sysadmin] ADD MEMBER [admin];
+BACKUP DATABASE sports_club TO DISK = '/var/opt/mssql/backups/sample_backup.bak' WITH FORMAT;

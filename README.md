@@ -24,6 +24,6 @@ Use [draw.io](https://app.diagrams.net/) to design and edit entity relationship 
  docker build -t sports-club-db .
 ```
 ```bash
-docker run -p 1433:1433 -d sports-club-db
+ docker run -v backups:/var/opt/mssql/backups -p 1433:1433 -d sports-club-db
 ```
     

@@ -22,6 +22,11 @@ namespace app.user
         private void HealthStatus_Load(object sender, EventArgs e)
         {
             UpdateHealthView();
+
+            if (Store.permissions.UpdateHealthStatus)
+            {
+                button2.Hide();
+            }
         }
 
         private void UpdateHealthView()

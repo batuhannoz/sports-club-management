@@ -6,7 +6,12 @@ ENV MSSQL_PID=Developer
 
 EXPOSE 1433
 
-VOLUME C:/Users/Batuhan/Documents/Sql-Server-Backups /backups
+USER root
+
+RUN mkdir -p /var/opt/mssql/backups
+RUN chown -R mssql: /var/opt/mssql/backups
+
+USER mssql
 
 WORKDIR /src
 COPY setup.ddl ./setup.ddl

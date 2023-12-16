@@ -60,11 +60,28 @@ namespace app
         public TimeSpan EndTime { get; set; }
     }
 
+    public struct Permissions
+    {
+        public int Id { get; set; }
+        public bool ViewPlans { get; set; }
+        public bool SubscribePlan { get; set; }
+        public bool UnsubscribePlan { get; set; }
+        public bool Pay { get; set; }
+        public bool ViewTimetable { get; set; }
+        public bool UpdateHealthStatus { get; set; }
+        public bool UpdatePhoneNumber { get; set; }
+        public bool UpdateEmail { get; set; }
+        public bool UpdatePassword { get; set; }
+        public bool UpdateAddress { get; set; }
+    }
+
     public static class Store
     {
         public static SqlConnection conn;
 
         public static User user = new User();
+
+        public static Permissions permissions = new Permissions();
 
         public static void Connect(string Username, string Password)
         {
@@ -97,6 +114,8 @@ namespace app
                         user.Email = reader.GetString(reader.GetOrdinal("email"));
                         user.Password = reader.GetString(reader.GetOrdinal("password"));
                         user.ProfileId = reader.GetInt32(reader.GetOrdinal("profile_id"));
+                        
+                        permissions = GetPermissionsByProfileId(user.ProfileId);
 
                         return true;
                     }
@@ -378,6 +397,36 @@ namespace app
             {
                 MessageBox.Show("Hata oluştu: " + ex.Message, "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        public static Permissions GetPermissionsByProfileId(int profileId)
+        {
+            Permissions permissions = new Permissions();
+
+            using (SqlCommand command = new SqlCommand("GetPermissionDetailsByProfileId", conn))
+            {
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@profile_id", profileId);
+
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        permissions.Id = reader.GetInt32(reader.GetOrdinal("id"));
+                        permissions.ViewPlans = reader.GetBoolean(reader.GetOrdinal("view_plans"));
+                        permissions.SubscribePlan = reader.GetBoolean(reader.GetOrdinal("subscribe_plan"));
+                        permissions.UnsubscribePlan = reader.GetBoolean(reader.GetOrdinal("unsubscribe_plan"));
+                        permissions.Pay = reader.GetBoolean(reader.GetOrdinal("pay"));
+                        permissions.ViewTimetable = reader.GetBoolean(reader.GetOrdinal("view_timetable"));
+                        permissions.UpdateHealthStatus = reader.GetBoolean(reader.GetOrdinal("update_health_status"));
+                        permissions.UpdatePhoneNumber = reader.GetBoolean(reader.GetOrdinal("update_phone_number"));
+                        permissions.UpdateEmail = reader.GetBoolean(reader.GetOrdinal("update_email"));
+                        permissions.UpdatePassword = reader.GetBoolean(reader.GetOrdinal("update_password"));
+                        permissions.UpdateAddress = reader.GetBoolean(reader.GetOrdinal("update_address"));
+                    }
+                }
+            }
+            return permissions;
         }
     }
 }
