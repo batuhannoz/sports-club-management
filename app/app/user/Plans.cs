@@ -22,6 +22,17 @@ namespace app.user
 
         private void Plans_Load(object sender, EventArgs e)
         {
+
+            if (!Store.permissions.ViewPlans)
+            {
+                dgv_Plans.Hide();
+            }
+
+            if (!Store.permissions.SubscribePlan)
+            {
+                btn_Subscribe.Hide();
+            }
+
             dgv_Plans.DataSource = Store.GetActivePlans();
 
             dgv_Plans.Columns["name"].HeaderText = "Plan İsmi";

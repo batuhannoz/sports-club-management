@@ -25,14 +25,16 @@ namespace app.admin
 
         private void btn_BackUpRestore_Click(object sender, EventArgs e)
         {
-            Form myForm = new BackUpRestoreMenu();
+            Form myForm = new BackUpRestoreDB();
             myForm.Show();
             this.Hide();
         }
 
         private void btn_Plan_Click(object sender, EventArgs e)
         {
-
+            Form myForm = new PlansTimeTables.Menu();
+            myForm.Show();
+            this.Hide();
         }
     }
 }

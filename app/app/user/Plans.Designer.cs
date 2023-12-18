@@ -34,10 +34,6 @@
             label2 = new Label();
             label3 = new Label();
             label4 = new Label();
-            lbl_PlanName = new Label();
-            lbl_PlanDesc = new Label();
-            lbl_PlanPrice = new Label();
-            lbl_PlanType = new Label();
             label9 = new Label();
             btn_Subscribe = new Button();
             lbl_SundayEnd = new Label();
@@ -63,6 +59,10 @@
             label8 = new Label();
             label13 = new Label();
             label14 = new Label();
+            lbl_PlanType = new Label();
+            lbl_PlanPrice = new Label();
+            lbl_PlanDesc = new Label();
+            lbl_PlanName = new Label();
             ((System.ComponentModel.ISupportInitialize)dgv_Plans).BeginInit();
             SuspendLayout();
             // 
@@ -127,38 +127,6 @@
             label4.Size = new Size(59, 15);
             label4.TabIndex = 58;
             label4.Text = "Plan Tipi :";
-            // 
-            // lbl_PlanName
-            // 
-            lbl_PlanName.Location = new Point(236, 328);
-            lbl_PlanName.Name = "lbl_PlanName";
-            lbl_PlanName.Size = new Size(179, 15);
-            lbl_PlanName.TabIndex = 59;
-            lbl_PlanName.Text = "lbl_PlanName";
-            // 
-            // lbl_PlanDesc
-            // 
-            lbl_PlanDesc.Location = new Point(236, 352);
-            lbl_PlanDesc.Name = "lbl_PlanDesc";
-            lbl_PlanDesc.Size = new Size(179, 43);
-            lbl_PlanDesc.TabIndex = 60;
-            lbl_PlanDesc.Text = "lbl_PlanDesc";
-            // 
-            // lbl_PlanPrice
-            // 
-            lbl_PlanPrice.Location = new Point(236, 406);
-            lbl_PlanPrice.Name = "lbl_PlanPrice";
-            lbl_PlanPrice.Size = new Size(179, 15);
-            lbl_PlanPrice.TabIndex = 61;
-            lbl_PlanPrice.Text = "lbl_PlanPrice";
-            // 
-            // lbl_PlanType
-            // 
-            lbl_PlanType.Location = new Point(236, 431);
-            lbl_PlanType.Name = "lbl_PlanType";
-            lbl_PlanType.Size = new Size(179, 15);
-            lbl_PlanType.TabIndex = 62;
-            lbl_PlanType.Text = "lbl_PlanType";
             // 
             // label9
             // 
@@ -410,6 +378,38 @@
             label14.Text = "Pazartesi";
             label14.TextAlign = ContentAlignment.MiddleCenter;
             // 
+            // lbl_PlanType
+            // 
+            lbl_PlanType.Location = new Point(236, 431);
+            lbl_PlanType.Name = "lbl_PlanType";
+            lbl_PlanType.Size = new Size(179, 15);
+            lbl_PlanType.TabIndex = 62;
+            lbl_PlanType.Text = "lbl_PlanType";
+            // 
+            // lbl_PlanPrice
+            // 
+            lbl_PlanPrice.Location = new Point(236, 406);
+            lbl_PlanPrice.Name = "lbl_PlanPrice";
+            lbl_PlanPrice.Size = new Size(179, 15);
+            lbl_PlanPrice.TabIndex = 61;
+            lbl_PlanPrice.Text = "lbl_PlanPrice";
+            // 
+            // lbl_PlanDesc
+            // 
+            lbl_PlanDesc.Location = new Point(236, 352);
+            lbl_PlanDesc.Name = "lbl_PlanDesc";
+            lbl_PlanDesc.Size = new Size(179, 43);
+            lbl_PlanDesc.TabIndex = 60;
+            lbl_PlanDesc.Text = "lbl_PlanDesc";
+            // 
+            // lbl_PlanName
+            // 
+            lbl_PlanName.Location = new Point(236, 328);
+            lbl_PlanName.Name = "lbl_PlanName";
+            lbl_PlanName.Size = new Size(179, 15);
+            lbl_PlanName.TabIndex = 59;
+            lbl_PlanName.Text = "lbl_PlanName";
+            // 
             // Plans
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -466,10 +466,6 @@
         private Label label2;
         private Label label3;
         private Label label4;
-        private Label lbl_PlanName;
-        private Label lbl_PlanDesc;
-        private Label lbl_PlanPrice;
-        private Label lbl_PlanType;
         private Label label9;
         private Button btn_Subscribe;
         private Label lbl_SundayEnd;
@@ -495,5 +491,9 @@
         private Label label8;
         private Label label13;
         private Label label14;
+        private Label lbl_PlanType;
+        private Label lbl_PlanPrice;
+        private Label lbl_PlanDesc;
+        private Label lbl_PlanName;
     }
 }

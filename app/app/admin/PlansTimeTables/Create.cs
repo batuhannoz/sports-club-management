@@ -8,11 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace app.admin
+namespace app.admin.PlansTimeTables
 {
-    public partial class BackUpRestoreTable : Form
+    public partial class Create : Form
     {
-        public BackUpRestoreTable()
+        public Create()
         {
             InitializeComponent();
         }

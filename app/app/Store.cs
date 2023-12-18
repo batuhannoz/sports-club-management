@@ -8,6 +8,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace app
 {
@@ -364,39 +365,50 @@ namespace app
             }
         }
 
-        public static void RestoreDatabase(string filePath)
+        public static void RestoreDatabase()
         {
-            try
-            {
-                string restoreQuery = $"USE master; RESTORE DATABASE sports_club FROM DISK = '{filePath}' WITH REPLACE";
+            SqlConnection restoreConn = new SqlConnection($@"
+                Server=127.0.0.1,1433;
+                Database=sports_club;
+                User Id=sa;
+                Password=Password1!;
+                TrustServerCertificate=True"
+            );
+            restoreConn.Open();
 
-                using (SqlCommand command = new SqlCommand(restoreQuery, conn))
-                {
-                    command.ExecuteNonQuery();
-                }
-                
-            }
-            catch (Exception ex)
+            string restoreQuery = @$"USE master; 
+                ALTER DATABASE sports_club SET Single_User WITH Rollback Immediate; 
+                RESTORE DATABASE sports_club FROM DISK = '/var/opt/mssql/backups/backup.bak' WITH REPLACE; 
+                ALTER DATABASE sports_club SET Multi_User";
+
+            using (SqlCommand command = new SqlCommand(restoreQuery, restoreConn))
             {
-                MessageBox.Show("Hata oluştu: " + ex.Message, "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                command.ExecuteNonQuery();
             }
+
+            restoreConn.Close();
         }
 
-        public static void BackupDatabase(string filePath)
+        public static void BackupDatabase()
         {
-            try
-            {
-                string backupQuery = $"BACKUP DATABASE sports_club TO DISK = '{filePath}'";
 
-                using (SqlCommand command = new SqlCommand(backupQuery, conn))
-                {
-                    command.ExecuteNonQuery();
-                }          
-            }
-            catch (Exception ex)
+            SqlConnection backupConn = new SqlConnection($@"
+                Server=127.0.0.1,1433;
+                Database=sports_club;
+                User Id=sa;
+                Password=Password1!;
+                TrustServerCertificate=True"
+            );
+            backupConn.Open();
+
+            string backupQuery = $"BACKUP DATABASE sports_club TO DISK = '/var/opt/mssql/backups/backup.bak';";
+
+            using (SqlCommand command = new SqlCommand(backupQuery, backupConn))
             {
-                MessageBox.Show("Hata oluştu: " + ex.Message, "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                command.ExecuteNonQuery();
             }
+            backupConn.Close(); 
+            
         }
 
         public static Permissions GetPermissionsByProfileId(int profileId)
@@ -427,6 +439,58 @@ namespace app
                 }
             }
             return permissions;
+        }
+
+        public static DataTable GetPlanData()
+        {
+            DataTable activePlans = new DataTable();
+
+            using (SqlCommand command = new SqlCommand("GetPlanData", conn))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+
+                using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                {
+                    adapter.Fill(activePlans);
+                }
+            }
+            return activePlans;
+        }
+
+        public static void UpdatePlanById(PlanInfo updatedPlan)
+        {
+            using (SqlCommand command = new SqlCommand("UpdatePlanById", conn))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+
+                // Add parameters
+                command.Parameters.AddWithValue("@planId", updatedPlan.Id);
+                command.Parameters.AddWithValue("@name", updatedPlan.Name);
+                command.Parameters.AddWithValue("@description", updatedPlan.Description);
+                command.Parameters.AddWithValue("@price", updatedPlan.Price);
+                command.Parameters.AddWithValue("@type", updatedPlan.Type);
+                command.Parameters.AddWithValue("@status", updatedPlan.Status);
+
+                // Execute the update stored procedure
+                command.ExecuteNonQuery();       
+            }
+        }
+
+        public static void UpdateTimetableById(TimetableInfo updatedTimetable)
+        {
+            using (SqlCommand command = new SqlCommand("UpdateTimetableById", conn))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+
+                // Add parameters
+                command.Parameters.AddWithValue("@timetableId", updatedTimetable.Id);
+                command.Parameters.AddWithValue("@weekDay", updatedTimetable.WeekDay);
+                command.Parameters.AddWithValue("@startTime", updatedTimetable.StartTime);
+                command.Parameters.AddWithValue("@endTime", updatedTimetable.EndTime);
+
+                // Execute the update stored procedure
+                command.ExecuteNonQuery();
+            }
         }
     }
 }

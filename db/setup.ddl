@@ -658,20 +658,113 @@ BEGIN
         [id] = @permissions_id;
 END;
 GO
+
+CREATE PROCEDURE GetPlanData
+AS
+BEGIN
+    SELECT * FROM [plan];
+END
+GO
+
+CREATE PROCEDURE GetTimetableData
+AS
+BEGIN
+    SELECT * FROM [timetable];
+END
+GO
+
+CREATE PROCEDURE UpdatePlanById
+    @planId int,
+    @name varchar(50),
+    @description varchar(150),
+    @price money,
+    @type varchar(10),
+    @status nvarchar(255)
+AS
+BEGIN
+    UPDATE [plan]
+    SET
+        [name] = @name,
+        [description] = @description,
+        [price] = @price,
+        [type] = @type,
+        [status] = @status
+    WHERE
+        [id] = @planId;
+END;
+GO
+
+CREATE PROCEDURE UpdateTimetableById
+    @timetableId int,
+    @weekDay tinyint,
+    @startTime time,
+    @endTime time
+AS
+BEGIN
+    UPDATE [timetable]
+    SET
+        [week_day] = @weekDay,
+        [start_time] = @startTime,
+        [end_time] = @endTime
+    WHERE
+        [id] = @timetableId;
+END;
+GO
+
+CREATE PROCEDURE CreateNewPlan
+    @name varchar(50),
+    @description varchar(150),
+    @price money,
+    @type varchar(10),
+    @status nvarchar(255),
+    @newPlanId int OUTPUT
+AS
+BEGIN
+    INSERT INTO [plan] ([name], [description], [price], [type], [status])
+    VALUES (@name, @description, @price, @type, @status);
+
+    SET @newPlanId = SCOPE_IDENTITY(); -- Get the newly generated plan ID
+END;
+GO
+
+CREATE PROCEDURE CreateNewTimetable
+    @planId int,
+    @weekDay tinyint,
+    @startTime time,
+    @endTime time,
+    @newTimetableId int OUTPUT
+AS
+BEGIN
+    INSERT INTO [timetable] ([plan_id], [week_day], [start_time], [end_time])
+    VALUES (@planId, @weekDay, @startTime, @endTime);
+
+    SET @newTimetableId = SCOPE_IDENTITY(); -- Get the newly generated timetable ID
+END;
+GO
 -- /procedure --
 
 -- triggers --
-CREATE TRIGGER trg_health_status_update
-ON [health_status]
+CREATE TRIGGER InsteadOfUpdateAddressTrigger
+ON [address]
 INSTEAD OF UPDATE
 AS
 BEGIN
     SET NOCOUNT ON;
 
-    INSERT INTO [health_status] ([user_id], [weight], [height])
-    SELECT [user_id], [weight], [height]
-    FROM INSERTED;
+    -- Insert the deleted addresses into the 'deleted_address' table
+    INSERT INTO [deleted_address] ([id], [user_id], [city], [district], [neighborhood], [street])
+    SELECT [id], [user_id], [city], [district], [neighborhood], [street]
+    FROM deleted;
+
+    -- Update the 'address' table with the new addresses
+    UPDATE a
+    SET
+        [user_id] = i.[user_id],
+        [city] = i.[city],
+        [district] = i.[district],
+        [neighborhood] = i.[neighborhood],
+        [street] = i.[street]
+    FROM [address] a
+    INNER JOIN inserted i ON a.[id] = i.[id];
 END;
 -- /triggers --
-
-BACKUP DATABASE sports_club TO DISK = '/var/opt/mssql/backups/sample_backup.bak' WITH FORMAT;
