@@ -655,14 +655,14 @@ CREATE PROCEDURE GetPlanData
 AS
 BEGIN
     SELECT * FROM [plan];
-END
+END;
 GO
 
 CREATE PROCEDURE GetTimetableData
 AS
 BEGIN
     SELECT * FROM [timetable];
-END
+END;
 GO
 
 CREATE PROCEDURE UpdatePlanById
@@ -752,6 +752,32 @@ CREATE PROCEDURE GetProfileNamesAndIds
 AS
 BEGIN
     SELECT id, name FROM [profile];
+END;
+GO
+
+CREATE PROCEDURE InsertNewUser
+    @name varchar(50),
+    @surname nvarchar(50),
+    @dateOfBirth date,
+    @phone varchar(15),
+    @email varchar(50),
+    @password varchar(50),
+    @profileId int,
+    @newUserId int OUTPUT
+AS
+BEGIN
+    INSERT INTO [user] ([name], [surname], [date_of_birth], [phone_number], [email], [password], [profile_id])
+    VALUES (@name, @surname, @dateOfBirth, @phone, @email, @password, @profileId);
+
+    SET @newUserId = SCOPE_IDENTITY(); -- Get the newly generated user ID
+END;
+GO
+
+CREATE PROCEDURE GetUserById
+    @userId int
+AS
+BEGIN
+    SELECT * FROM [user] WHERE [id] = @userId;
 END;
 GO
 -- /procedure --

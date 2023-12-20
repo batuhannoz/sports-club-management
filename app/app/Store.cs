@@ -114,8 +114,6 @@ namespace app
                         user.Password = reader.GetString(reader.GetOrdinal("password"));
                         user.ProfileId = reader.GetInt32(reader.GetOrdinal("profile_id"));
                         
-                        
-
                         return true;
                     }
                 }
@@ -374,10 +372,12 @@ namespace app
             );
             restoreConn.Open();
 
-            string restoreQuery = @$"USE master; 
+            string restoreQuery = @"USE master; 
                 ALTER DATABASE sports_club SET Single_User WITH Rollback Immediate; 
                 RESTORE DATABASE sports_club FROM DISK = '/var/opt/mssql/backups/backup.bak' WITH REPLACE; 
-                ALTER DATABASE sports_club SET Multi_User";
+                ALTER DATABASE sports_club SET Multi_User;
+                USE sports_club;
+                ALTER USER [admin] WITH LOGIN = [admin];";
 
             using (SqlCommand command = new SqlCommand(restoreQuery, restoreConn))
             {
@@ -576,6 +576,68 @@ namespace app
                     return profilesTable;
                 }
             }            
+        }
+        public static int InsertNewUser(string name, string surname, DateTime dateOfBirth, string phone, string email, string password, int profileId)
+        {
+            using (SqlCommand command = new SqlCommand("InsertNewUser", conn))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+
+                // Add input parameters
+                command.Parameters.AddWithValue("@name", name);
+                command.Parameters.AddWithValue("@surname", surname);
+                command.Parameters.AddWithValue("@dateOfBirth", dateOfBirth);
+                command.Parameters.AddWithValue("@phone", phone);
+                command.Parameters.AddWithValue("@email", email);
+                command.Parameters.AddWithValue("@password", password);
+                command.Parameters.AddWithValue("@profileId", profileId);
+
+                // Add output parameter for the new user ID
+                SqlParameter newUserIdParameter = new SqlParameter("@newUserId", SqlDbType.Int);
+                newUserIdParameter.Direction = ParameterDirection.Output;
+                command.Parameters.Add(newUserIdParameter);
+
+                // Execute the stored procedure
+                command.ExecuteNonQuery();
+
+                // Retrieve the generated user ID
+                int newUserId = Convert.ToInt32(newUserIdParameter.Value);
+                return newUserId;
+            }
+        }
+
+        public static User GetUserById(int userId)
+        {
+            User user = new User(); // Initialize a new User struct
+
+            using (SqlCommand command = new SqlCommand("GetUserById", conn))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+
+                // Add parameter for the user ID
+                command.Parameters.AddWithValue("@userId", userId);
+
+                using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                {
+                    DataTable userData = new DataTable();
+                    adapter.Fill(userData);
+
+                    // If user is found, populate the User struct
+                    if (userData.Rows.Count > 0)
+                    {
+                        DataRow userRow = userData.Rows[0];
+                        user.Id = Convert.ToInt32(userRow["id"]);
+                        user.Name = Convert.ToString(userRow["name"]);
+                        user.Surname = Convert.ToString(userRow["surname"]);
+                        user.DateOfBirth = Convert.ToDateTime(userRow["date_of_birth"]);
+                        user.PhoneNumber = Convert.ToString(userRow["phone_number"]);
+                        user.Email = Convert.ToString(userRow["email"]);
+                        user.Password = Convert.ToString(userRow["password"]);
+                        user.ProfileId = Convert.ToInt32(userRow["profile_id"]);
+                    }
+                }
+            }
+            return user;
         }
     }
 }

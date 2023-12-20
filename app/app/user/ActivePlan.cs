@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -44,7 +45,7 @@ namespace app.user
                 lbl_PlanPrice.Text = $"{planInfo.Price}";
                 lbl_PlanType.Text = $"{planInfo.Type}";
 
-                if (!Store.permissions.ViewTimetable)
+                if (Store.permissions.ViewTimetable)
                 {
                     timetable = Store.GetWeeklyTimetableByPlanId(subInfo.PlanId);
                     timetable = timetable.OrderBy(entry => entry.WeekDay).ToList();
