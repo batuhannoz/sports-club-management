@@ -51,8 +51,13 @@ namespace app
         public string Type { get; set; }
         public string Status { get; set; }
     }
-
-    public struct TimetableInfo
+    public struct Profile
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public int PermissionId { get; set; }
+    }
+        public struct TimetableInfo
     {
         public int Id { get; set; }
         public int PlanId { get; set; }
@@ -638,6 +643,111 @@ namespace app
                 }
             }
             return user;
+        }
+
+        public static DataTable GetAllProfiles()
+        {
+            using (SqlCommand command = new SqlCommand("GetAllProfiles", conn))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+
+                using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                {
+                    DataTable profilesData = new DataTable();
+                    adapter.Fill(profilesData);
+
+                    return profilesData;
+                }
+            }
+        }
+
+        public static void UpdateProfileAndPermissions(int profileId,
+        string name, bool viewPlans, bool subscribePlan, bool unsubscribePlan, bool pay,
+        bool viewTimetable, bool updateHealthStatus, bool updateProfile, bool updateAddress)
+        {
+            using (SqlCommand command = new SqlCommand("UpdateProfileAndPermissions", conn))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+
+                // Add parameters for the update
+                command.Parameters.AddWithValue("@profileId", profileId);
+                command.Parameters.AddWithValue("@name", name);
+                command.Parameters.AddWithValue("@viewPlans", viewPlans);
+                command.Parameters.AddWithValue("@subscribePlan", subscribePlan);
+                command.Parameters.AddWithValue("@unsubscribePlan", unsubscribePlan);
+                command.Parameters.AddWithValue("@pay", pay);
+                command.Parameters.AddWithValue("@viewTimetable", viewTimetable);
+                command.Parameters.AddWithValue("@updateHealthStatus", updateHealthStatus);
+                command.Parameters.AddWithValue("@updateProfile", updateProfile);
+                command.Parameters.AddWithValue("@updateAddress", updateAddress);
+
+                // Execute the stored procedure
+                command.ExecuteNonQuery();
+            }            
+        }
+
+        public static Permissions GetPermissionsById(int permissionsId)
+        {
+            Permissions permissions = new Permissions();
+
+            using (SqlCommand command = new SqlCommand("GetPermissionsById", conn))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+
+                command.Parameters.AddWithValue("@permissionsId", permissionsId);
+
+                using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                {
+                    DataTable permissionsData = new DataTable();
+                    adapter.Fill(permissionsData);
+
+                    if (permissionsData.Rows.Count > 0)
+                    {
+                        DataRow permissionsRow = permissionsData.Rows[0];
+                        permissions.ViewPlans = Convert.ToBoolean(permissionsRow["view_plans"]);
+                        permissions.SubscribePlan = Convert.ToBoolean(permissionsRow["subscribe_plan"]);
+                        permissions.UnsubscribePlan = Convert.ToBoolean(permissionsRow["unsubscribe_plan"]);
+                        permissions.Pay = Convert.ToBoolean(permissionsRow["pay"]);
+                        permissions.ViewTimetable = Convert.ToBoolean(permissionsRow["view_timetable"]);
+                        permissions.UpdateHealthStatus = Convert.ToBoolean(permissionsRow["update_health_status"]);
+                        permissions.UpdateProfile = Convert.ToBoolean(permissionsRow["update_profile"]);
+                        permissions.UpdateAddress = Convert.ToBoolean(permissionsRow["update_address"]);
+                    }
+                }
+            }
+            return permissions;
+        }
+
+        public static void DeleteProfileAndPermissions(int profileId)
+        {
+            using (SqlCommand command = new SqlCommand("DeleteProfileAndPermissions", conn))
+            {
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                command.Parameters.AddWithValue("@profileId", profileId);
+
+                command.ExecuteNonQuery();                
+            }
+        }
+
+        public static void InsertProfileAndPermissions(Permissions permissions, Profile profile)
+        {
+            using (SqlCommand command = new SqlCommand("InsertProfileAndPermissions", conn))
+            {
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                command.Parameters.AddWithValue("@name", profile.Name);
+                command.Parameters.AddWithValue("@viewPlans", permissions.ViewPlans);
+                command.Parameters.AddWithValue("@subscribePlan", permissions.SubscribePlan);
+                command.Parameters.AddWithValue("@unsubscribePlan", permissions.UnsubscribePlan);
+                command.Parameters.AddWithValue("@pay", permissions.Pay);
+                command.Parameters.AddWithValue("@viewTimetable", permissions.ViewTimetable);
+                command.Parameters.AddWithValue("@updateHealthStatus", permissions.UpdateHealthStatus);
+                command.Parameters.AddWithValue("@updateProfile", permissions.UpdateProfile);
+                command.Parameters.AddWithValue("@updateAddress", permissions.UpdateAddress);
+
+                command.ExecuteNonQuery();                
+            }
         }
     }
 }

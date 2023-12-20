@@ -41,5 +41,12 @@ namespace app.admin
             myForm.Show();
             this.Hide();
         }
+
+        private void btn_Exit_Click(object sender, EventArgs e)
+        {
+            Form myForm = new Entry();
+            myForm.Show();
+            this.Hide();
+        }
     }
 }

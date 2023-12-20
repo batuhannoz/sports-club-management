@@ -30,5 +30,12 @@ namespace app.admin.UsersProfiles
             myForm.Show();
             this.Hide();
         }
+
+        private void btn_Profiles_Click(object sender, EventArgs e)
+        {
+            Form myForm = new Profiles();
+            myForm.Show();
+            this.Hide();
+        }
     }
 }

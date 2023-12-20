@@ -26,7 +26,7 @@ namespace app
                 dtPicker_dob.Value <= DateTime.Now &&
                 txtbox_Surname.Text != "" &&
                 txtbox_PhoneNumber.Text != "" &&
-                txtbox_Email.Text != "" && 
+                txtbox_Email.Text != "" &&
                 txtbox_Password.Text != "" &&
                 txtbox_Password.Text == txtbox_PasswordCheck.Text
                 )
@@ -51,13 +51,22 @@ namespace app
                 }
                 catch (Exception ex)
                 {
+                    Store.conn.Close();
                     label_RegisterError.Text = ex.Message;
                 }
-            } else
+            }
+            else
             {
                 label_RegisterError.Text = "Bilgileri tekrar kontrol ediniz";
                 return;
             }
+        }
+
+        private void btn_Exit_Click(object sender, EventArgs e)
+        {
+            Form myForm = new Entry();
+            myForm.Show();
+            this.Hide();
         }
     }
 }

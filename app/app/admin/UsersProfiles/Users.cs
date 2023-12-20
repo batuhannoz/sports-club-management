@@ -86,9 +86,9 @@ namespace app.admin.UsersProfiles
                 )
             {
                 try
-                {
+                {                    
                     Store.UpdateUser(
-                        Store.user.Id,
+                        user.Id,
                         txtbox_Name.Text,
                         txtbox_Surname.Text,
                         dtPicker_dob.Value,
@@ -101,6 +101,7 @@ namespace app.admin.UsersProfiles
                 catch (Exception ex) 
                 {
                     label_UserError.Text = ex.Message;
+                    return;
                 }
             }
             else
@@ -108,6 +109,7 @@ namespace app.admin.UsersProfiles
                 label_UserError.Text = "Bilgileri tekrar kontrol ediniz";
                 return;
             }
+            label_UserError.Text = "Updated";
         }
 
         private void btn_UpdateAddress_Click(object sender, EventArgs e)
@@ -137,6 +139,7 @@ namespace app.admin.UsersProfiles
                 label_AddressError.Text = "Bilgileri tekrar kontrol ediniz";
                 return;
             }
+            label_AddressError.Text = "Updated";
         }
 
         private void btn_InsertUser_Click(object sender, EventArgs e)
@@ -184,6 +187,7 @@ namespace app.admin.UsersProfiles
                 lbl_InsertError.Text = "Bilgileri tekrar kontrol ediniz";
                 return;
             }
+            lbl_InsertError.Text = "Insterted";
         }
     }
 }

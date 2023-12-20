@@ -35,7 +35,7 @@ namespace app.user
                         Form myForm = new UserMenu();
                         myForm.Show();
                         this.Hide();
-                    } 
+                    }
                     else
                     {
                         label_Err.Text = "E-mail veya Şifre yanlış";
@@ -44,6 +44,7 @@ namespace app.user
                 }
                 catch (Exception ex)
                 {
+                    Store.conn.Close();
                     label_Err.Text = ex.Message;
                     return;
                 }
@@ -54,6 +55,13 @@ namespace app.user
                 return;
             }
 
+        }
+
+        private void btn_Exit_Click(object sender, EventArgs e)
+        {
+            Form myForm = new Entry();
+            myForm.Show();
+            this.Hide();
         }
     }
 }

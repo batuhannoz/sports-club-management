@@ -44,6 +44,7 @@
             btn_Register = new Button();
             label_RegisterError = new Label();
             dtPicker_dob = new DateTimePicker();
+            btn_Exit = new Button();
             SuspendLayout();
             // 
             // txtbox_Name
@@ -176,11 +177,22 @@
             dtPicker_dob.Size = new Size(138, 23);
             dtPicker_dob.TabIndex = 16;
             // 
+            // btn_Exit
+            // 
+            btn_Exit.Location = new Point(12, 12);
+            btn_Exit.Name = "btn_Exit";
+            btn_Exit.Size = new Size(75, 23);
+            btn_Exit.TabIndex = 17;
+            btn_Exit.Text = "Geri";
+            btn_Exit.UseVisualStyleBackColor = true;
+            btn_Exit.Click += btn_Exit_Click;
+            // 
             // Register
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(344, 329);
+            Controls.Add(btn_Exit);
             Controls.Add(dtPicker_dob);
             Controls.Add(label_RegisterError);
             Controls.Add(btn_Register);
@@ -221,5 +233,6 @@
         private Button btn_Register;
         private Label label_RegisterError;
         private DateTimePicker dtPicker_dob;
+        private Button btn_Exit;
     }
 }

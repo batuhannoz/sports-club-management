@@ -49,5 +49,13 @@ namespace app.user
         {
             lbl_Name.Text = $"Merhaba {Store.user.Name}";
         }
+
+        private void btn_Exit_Click(object sender, EventArgs e)
+        {
+            Store.conn.Close();
+            Form myForm = new Entry();
+            myForm.Show();
+            this.Hide();
+        }
     }
 }

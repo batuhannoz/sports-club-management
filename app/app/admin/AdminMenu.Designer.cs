@@ -31,6 +31,7 @@
             btn_UsersProfiles = new Button();
             btn_BackUpRestore = new Button();
             btn_Plan = new Button();
+            btn_Exit = new Button();
             SuspendLayout();
             // 
             // btn_UsersProfiles
@@ -64,11 +65,22 @@
             btn_Plan.UseVisualStyleBackColor = true;
             btn_Plan.Click += btn_Plan_Click;
             // 
+            // btn_Exit
+            // 
+            btn_Exit.Location = new Point(12, 12);
+            btn_Exit.Name = "btn_Exit";
+            btn_Exit.Size = new Size(75, 23);
+            btn_Exit.TabIndex = 3;
+            btn_Exit.Text = "Exit";
+            btn_Exit.UseVisualStyleBackColor = true;
+            btn_Exit.Click += btn_Exit_Click;
+            // 
             // AdminMenu
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(436, 212);
+            Controls.Add(btn_Exit);
             Controls.Add(btn_Plan);
             Controls.Add(btn_BackUpRestore);
             Controls.Add(btn_UsersProfiles);
@@ -82,5 +94,6 @@
         private Button btn_UsersProfiles;
         private Button btn_BackUpRestore;
         private Button btn_Plan;
+        private Button btn_Exit;
     }
 }

@@ -61,6 +61,7 @@
             btn_Profiles.TabIndex = 45;
             btn_Profiles.Text = "Profiles && Permissions";
             btn_Profiles.UseVisualStyleBackColor = true;
+            btn_Profiles.Click += btn_Profiles_Click;
             // 
             // Menu
             // 
