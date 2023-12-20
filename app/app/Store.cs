@@ -70,9 +70,7 @@ namespace app
         public bool Pay { get; set; }
         public bool ViewTimetable { get; set; }
         public bool UpdateHealthStatus { get; set; }
-        public bool UpdatePhoneNumber { get; set; }
-        public bool UpdateEmail { get; set; }
-        public bool UpdatePassword { get; set; }
+        public bool UpdateProfile { get; set; }
         public bool UpdateAddress { get; set; }
     }
 
@@ -116,7 +114,7 @@ namespace app
                         user.Password = reader.GetString(reader.GetOrdinal("password"));
                         user.ProfileId = reader.GetInt32(reader.GetOrdinal("profile_id"));
                         
-                        permissions = GetPermissionsByProfileId(user.ProfileId);
+                        
 
                         return true;
                     }
@@ -431,9 +429,7 @@ namespace app
                         permissions.Pay = reader.GetBoolean(reader.GetOrdinal("pay"));
                         permissions.ViewTimetable = reader.GetBoolean(reader.GetOrdinal("view_timetable"));
                         permissions.UpdateHealthStatus = reader.GetBoolean(reader.GetOrdinal("update_health_status"));
-                        permissions.UpdatePhoneNumber = reader.GetBoolean(reader.GetOrdinal("update_phone_number"));
-                        permissions.UpdateEmail = reader.GetBoolean(reader.GetOrdinal("update_email"));
-                        permissions.UpdatePassword = reader.GetBoolean(reader.GetOrdinal("update_password"));
+                        permissions.UpdateProfile = reader.GetBoolean(reader.GetOrdinal("update_profile"));
                         permissions.UpdateAddress = reader.GetBoolean(reader.GetOrdinal("update_address"));
                     }
                 }
@@ -491,6 +487,95 @@ namespace app
                 // Execute the update stored procedure
                 command.ExecuteNonQuery();
             }
+        }
+
+        public static int CreateNewPlan(PlanInfo newPlan)
+        {
+            using (SqlCommand command = new SqlCommand("CreateNewPlan", conn))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+
+                // Add input parameters
+                command.Parameters.AddWithValue("@name", newPlan.Name);
+                command.Parameters.AddWithValue("@description", newPlan.Description);
+                command.Parameters.AddWithValue("@price", newPlan.Price);
+                command.Parameters.AddWithValue("@type", newPlan.Type);
+                command.Parameters.AddWithValue("@status", newPlan.Status);
+
+                // Add output parameter for the new plan ID
+                SqlParameter newPlanIdParameter = new SqlParameter("@newPlanId", SqlDbType.Int);
+                newPlanIdParameter.Direction = ParameterDirection.Output;
+                command.Parameters.Add(newPlanIdParameter);
+
+                // Execute the stored procedure
+                command.ExecuteNonQuery();
+
+                // Retrieve the generated plan ID
+                int newPlanId = Convert.ToInt32(newPlanIdParameter.Value);
+                return newPlanId;
+            }          
+        }
+
+        public static int CreateNewTimetable(TimetableInfo newTimetable)
+        {
+            using (SqlCommand command = new SqlCommand("CreateNewTimetable", conn))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+
+                // Add input parameters
+                command.Parameters.AddWithValue("@planId", newTimetable.PlanId);
+                command.Parameters.AddWithValue("@weekDay", newTimetable.WeekDay);
+                command.Parameters.AddWithValue("@startTime", newTimetable.StartTime);
+                command.Parameters.AddWithValue("@endTime", newTimetable.EndTime);
+
+                // Add output parameter for the new timetable ID
+                SqlParameter newTimetableIdParameter = new SqlParameter("@newTimetableId", SqlDbType.Int);
+                newTimetableIdParameter.Direction = ParameterDirection.Output;
+                command.Parameters.Add(newTimetableIdParameter);
+
+                // Execute the stored procedure
+                command.ExecuteNonQuery();
+
+                // Retrieve the generated timetable ID
+                int newTimetableId = Convert.ToInt32(newTimetableIdParameter.Value);
+                return newTimetableId;
+            }            
+        }
+
+        public static DataTable SearchUsers(string keyword)
+        {
+            using (SqlCommand command = new SqlCommand("SearchUsers", conn))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+
+                // Add parameter for the keyword
+                command.Parameters.AddWithValue("@keyword", keyword);
+
+                // Execute the stored procedure and fill the DataTable
+                using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                {
+                    DataTable searchResults = new DataTable();
+                    adapter.Fill(searchResults);
+                    return searchResults;
+                }
+            }
+        }
+
+        public static DataTable GetProfilesWithID()
+        {
+            using (SqlCommand command = new SqlCommand("GetProfileNamesAndIds", conn))
+            {
+                DataTable profilesTable = new DataTable();
+
+                command.CommandType = CommandType.StoredProcedure;
+
+                using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                {
+                    adapter.Fill(profilesTable);
+
+                    return profilesTable;
+                }
+            }            
         }
     }
 }

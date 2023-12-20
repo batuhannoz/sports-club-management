@@ -28,16 +28,23 @@ namespace app.user
                 txtbox_Password.Text != ""
                 )
             {
-                Store.UpdateUser(
-                    Store.user.Id,
-                    txtbox_Name.Text,
-                    txtbox_Surname.Text,
-                    dtPicker_dob.Value,
-                    txtbox_PhoneNumber.Text,
-                    txtbox_Email.Text,
-                    txtbox_Password.Text,
-                    Store.user.ProfileId
-                     );
+                try
+                {
+                    Store.UpdateUser(
+                        Store.user.Id,
+                        txtbox_Name.Text,
+                        txtbox_Surname.Text,
+                        dtPicker_dob.Value,
+                        txtbox_PhoneNumber.Text,
+                        txtbox_Email.Text,
+                        txtbox_Password.Text,
+                        Store.user.ProfileId
+                    );
+                }
+                catch (Exception ex) 
+                {
+                    label_UserError.Text = ex.Message;
+                }             
             }
             else
             {
@@ -60,6 +67,16 @@ namespace app.user
             txtbox_District.Text = address.District;
             txtbox_Neighborhood.Text = address.Neighborhood;
             txtbox_Street.Text = address.Street;
+
+            if (!Store.permissions.UpdateProfile)
+            {
+                button1.Hide();
+            }
+
+            if (!Store.permissions.UpdateAddress)
+            {
+                button2.Hide();
+            }
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -70,13 +87,20 @@ namespace app.user
                 txtbox_Street.Text != ""
                 )
             {
-                Store.InsertNewAddress(
-                    Store.user.Id,
-                    txtbox_City.Text,
-                    txtbox_District.Text,
-                    txtbox_Neighborhood.Text,
-                    txtbox_Street.Text
-                );
+                try
+                {
+                    Store.InsertNewAddress(
+                        Store.user.Id,
+                        txtbox_City.Text,
+                        txtbox_District.Text,
+                        txtbox_Neighborhood.Text,
+                        txtbox_Street.Text
+                    );
+                }
+                catch (Exception ex)
+                {
+                    label_UserError.Text = ex.Message;
+                }
             }
             else
             {

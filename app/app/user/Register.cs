@@ -30,20 +30,29 @@ namespace app
                 txtbox_Password.Text != "" &&
                 txtbox_Password.Text == txtbox_PasswordCheck.Text
                 )
-            {   
-                Store.Connect("sa", "Password1!");
-                Store.InsertUser(
-                    txtbox_Name.Text,
-                    txtbox_Surname.Text,
-                    dtPicker_dob.Value,
-                    txtbox_PhoneNumber.Text,
-                    txtbox_Email.Text,
-                    txtbox_Password.Text
-                     );
-                Store.UserLogin(txtbox_Email.Text, txtbox_Password.Text);
-                Form myForm = new UserMenu();
-                myForm.Show();
-                this.Hide();
+            {
+                try
+                {
+                    Store.Connect("sa", "Password1!");
+                    Store.InsertUser(
+                        txtbox_Name.Text,
+                        txtbox_Surname.Text,
+                        dtPicker_dob.Value,
+                        txtbox_PhoneNumber.Text,
+                        txtbox_Email.Text,
+                        txtbox_Password.Text
+                         );
+                    Store.UserLogin(txtbox_Email.Text, txtbox_Password.Text);
+                    Store.permissions = Store.GetPermissionsByProfileId(Store.user.ProfileId);
+
+                    Form myForm = new UserMenu();
+                    myForm.Show();
+                    this.Hide();
+                }
+                catch (Exception ex)
+                {
+                    label_RegisterError.Text = ex.Message;
+                }
             } else
             {
                 label_RegisterError.Text = "Bilgileri tekrar kontrol ediniz";

@@ -20,7 +20,9 @@ namespace app.admin
 
         private void btn_UsersProfiles_Click(object sender, EventArgs e)
         {
-            
+            Form myForm = new UsersProfiles.Menu();
+            myForm.Show();
+            this.Hide();
         }
 
         private void btn_BackUpRestore_Click(object sender, EventArgs e)

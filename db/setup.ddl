@@ -18,9 +18,7 @@ CREATE TABLE [permissions] (
     [pay] bit,
     [view_timetable] bit,
     [update_health_status] bit,
-    [update_phone_number] bit,
-    [update_email] bit,
-    [update_password] bit,
+    [update_profile] bit,
     [update_address] bit
 )
 GO
@@ -33,9 +31,7 @@ CREATE TABLE [deleted_permissions] (
     [pay] bit,
     [view_timetable] bit,
     [update_health_status] bit,
-    [update_phone_number] bit,
-    [update_email] bit,
-    [update_password] bit,
+    [update_profile] bit,
     [update_address] bit
 );
 GO
@@ -54,16 +50,14 @@ BEGIN
     [pay],
     [view_timetable],
     [update_health_status],
-    [update_phone_number],
-    [update_email],
-    [update_password],
+    [update_profile],
     [update_address]
     FROM
         [deleted];
 END;
 GO
 
-INSERT INTO [permissions]  VALUES (1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+INSERT INTO [permissions]  VALUES (1, 1, 1, 1, 1, 1, 1, 1);
 GO
 -- /permissions --
 
@@ -648,9 +642,7 @@ BEGIN
         [pay],
         [view_timetable],
         [update_health_status],
-        [update_phone_number],
-        [update_email],
-        [update_password],
+        [update_profile],
         [update_address]
     FROM
         [permissions]
@@ -739,6 +731,27 @@ BEGIN
     VALUES (@planId, @weekDay, @startTime, @endTime);
 
     SET @newTimetableId = SCOPE_IDENTITY(); -- Get the newly generated timetable ID
+END;
+GO
+
+CREATE PROCEDURE SearchUsers
+    @keyword varchar(50)
+AS
+BEGIN
+    SELECT *
+    FROM [user]
+    WHERE
+        [name] LIKE '%' + @keyword + '%' OR
+        [surname] LIKE '%' + @keyword + '%' OR
+        [phone_number] LIKE '%' + @keyword + '%' OR
+        [email] LIKE '%' + @keyword + '%';
+END;
+GO
+
+CREATE PROCEDURE GetProfileNamesAndIds
+AS
+BEGIN
+    SELECT id, name FROM [profile];
 END;
 GO
 -- /procedure --

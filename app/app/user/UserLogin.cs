@@ -27,7 +27,10 @@ namespace app.user
                 try
                 {
                     Store.Connect("sa", "Password1!");
-                    if (Store.UserLogin(txtBox_Email.Text, txtBox_Password.Text))
+                    bool isLoggedIn = Store.UserLogin(txtBox_Email.Text, txtBox_Password.Text);
+                    Store.permissions = Store.GetPermissionsByProfileId(Store.user.ProfileId);
+
+                    if (isLoggedIn)
                     {
                         Form myForm = new UserMenu();
                         myForm.Show();

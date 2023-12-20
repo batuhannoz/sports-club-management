@@ -23,7 +23,7 @@ namespace app.user
         {
             UpdateHealthView();
 
-            if (Store.permissions.UpdateHealthStatus)
+            if (!Store.permissions.UpdateHealthStatus)
             {
                 button2.Hide();
             }
