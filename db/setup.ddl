@@ -442,10 +442,33 @@ CREATE PROCEDURE InsertNewAddress
     @street varchar(50)
 AS
 BEGIN
-    SET NOCOUNT ON;
+   SET NOCOUNT ON;
 
-    INSERT INTO [address] ([user_id], [city], [district], [neighborhood], [street])
-    VALUES (@user_id, @city, @district, @neighborhood, @street);
+    DECLARE @lastAddressID INT;
+
+    -- Get the ID of the user's last address
+    SELECT TOP 1 @lastAddressID = id
+    FROM [address]
+    WHERE user_id = @user_id
+    ORDER BY id DESC;
+
+    -- Update the last address
+    IF @lastAddressID IS NOT NULL
+    BEGIN
+        UPDATE [address]
+        SET
+            city = @city,
+            district = @district,
+            neighborhood = @neighborhood,
+            street = @street
+        WHERE id = @lastAddressID;
+    END;
+    ELSE
+    BEGIN
+        -- If no previous address is found, insert a new one
+        INSERT INTO [address] (user_id, city, district, neighborhood, street)
+        VALUES (@user_id, @city, @district, @neighborhood, @street);
+    END;
 END;
 GO
 
@@ -872,7 +895,6 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    -- Insert the deleted addresses into the 'deleted_address' table
     INSERT INTO [deleted_address] ([id], [user_id], [city], [district], [neighborhood], [street])
     SELECT [id], [user_id], [city], [district], [neighborhood], [street]
     FROM deleted;
@@ -889,36 +911,3 @@ BEGIN
     INNER JOIN inserted i ON a.[id] = i.[id];
 END;
 -- /triggers --
-
-INSERT INTO [user] ([name], [surname], [date_of_birth], [phone_number], [email], [password], [profile_id])
-VALUES
-    ('John', 'Doe', '1990-01-01', '123456789', 'john.doe@example.com', 'password123', 1),
-    ('Jane', 'Smith', '1985-05-15', '987654321', 'jane.smith@example.com', 'pass456', 1),
-    ('Alice', 'Johnson', '1988-08-20', '555555555', 'alice.johnson@example.com', 'secure789', 1),
-    ('Bob', 'Williams', '1995-03-10', '111223344', 'bob.williams@example.com', 'userpass', 1),
-    ('Emily', 'Brown', '1982-12-05', '999888777', 'emily.brown@example.com', 'letmein123', 1),
-    ('David', 'Miller', '1998-07-18', '444433322', 'david.miller@example.com', 'mypassword', 1),
-    ('Sophia', 'Davis', '1987-09-25', '777766655', 'sophia.davis@example.com', 'p@ssword', 1),
-    ('Daniel', 'Wilson', '1993-06-30', '222211110', 'daniel.wilson@example.com', 'secret123', 1),
-    ('Olivia', 'Taylor', '1980-04-12', '666655544', 'olivia.taylor@example.com', 'adminpass', 1),
-    ('Michael', 'Anderson', '1991-11-08', '888877766', 'michael.anderson@example.com', 'access123', 1),
-    ('Ella', 'Jones', '1997-02-28', '333322221', 'ella.jones@example.com', 'userpass123', 1),
-    ('Matthew', 'Clark', '1984-10-14', '444455556', 'matthew.clark@example.com', 'securepass', 1),
-    ('Emma', 'Moore', '1996-06-22', '999988877', 'emma.moore@example.com', '123456789', 1),
-    ('Christopher', 'Lee', '1989-09-03', '777766655', 'chris.lee@example.com', 'letmein456', 1),
-    ('Grace', 'Turner', '1992-04-19', '888877766', 'grace.turner@example.com', 'mypassword789', 1),
-    ('Andrew', 'White', '1986-12-07', '555544443', 'andrew.white@example.com', 'p@ssword123', 1),
-    ('Madison', 'Baker', '1994-08-26', '666655544', 'madison.baker@example.com', 'secret456', 1),
-    ('Logan', 'Young', '1981-01-09', '111122223', 'logan.young@example.com', 'adminpass789', 1),
-    ('Ava', 'Cooper', '1999-07-15', '222233334', 'ava.cooper@example.com', 'access456', 1),
-    ('Joshua', 'Wright', '1983-05-31', '777788889', 'joshua.wright@example.com', 'password789', 1),
-    ('Aiden', 'Hill', '1990-11-17', '555566667', 'aiden.hill@example.com', 'letmein789', 1),
-    ('Sophie', 'Adams', '1988-03-02', '333344445', 'sophie.adams@example.com', 'secure123456', 1),
-    ('Liam', 'Nelson', '1995-10-10', '111122223', 'liam.nelson@example.com', 'mypassword123', 1),
-    ('Chloe', 'Carter', '1980-08-04', '666655544', 'chloe.carter@example.com', 'p@ssword456', 1),
-    ('Jackson', 'Ward', '1993-12-12', '999988877', 'jackson.ward@example.com', 'adminpass123', 1),
-    ('Harper', 'Fisher', '1987-06-18', '444455556', 'harper.fisher@example.com', 'access789', 1),
-    ('Caleb', 'Evans', '1991-02-25', '555544443', 'caleb.evans@example.com', 'password456', 1),
-    ('Addison', 'Reed', '1982-09-08', '777766655', 'addison.reed@example.com', 'letmein123456', 1),
-    ('Owen', 'Cole', '1998-05-14', '222233334', 'owen.cole@example.com', 'secure789012', 1),
-    ('Isabella', 'Woods', '1984-01-28', '888877766', 'isabella.woods@example.com', 'mypassword123456', 1);
