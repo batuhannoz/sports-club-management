@@ -12,7 +12,7 @@ Simple application for sport club management
 - [ ] Import Data From Files from txt/csv/xls
 - [x] Authentication With Username and Password
 - [x] User Identification and Authorization (Read/Enter/Update/Delete) with Admin User
-- [ ] Back up & Restore DB
+- [x] Back up & Restore DB
 - [ ] PDF
 - [ ] DVD
 
