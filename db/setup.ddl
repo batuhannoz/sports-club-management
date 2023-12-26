@@ -911,3 +911,73 @@ BEGIN
     INNER JOIN inserted i ON a.[id] = i.[id];
 END;
 -- /triggers --
+
+INSERT INTO [plan] ([name], [description], [price], [type], [status])
+VALUES
+('Basic Plan', 'Access to basic facilities', 50.00, 'individual', 'active'),
+('Premium Plan', 'Full access to all facilities', 100.00, 'individual', 'active'),
+('Group Plan', 'Access for groups', 150.00, 'group', 'active');
+
+-- Insert sample data into the "timetable" table for each plan
+-- Each plan will have exactly 7 timetable entries for each day of the week
+INSERT INTO [timetable] ([plan_id], [week_day], [start_time], [end_time])
+VALUES
+-- Timetables for Basic Plan
+(1, 0, '08:00:00', '10:00:00'),
+(1, 1, '15:00:00', '17:00:00'),
+(1, 2, '12:30:00', '14:30:00'),
+(1, 3, '10:00:00', '12:00:00'),
+(1, 4, '17:30:00', '19:30:00'),
+(1, 5, '14:00:00', '16:00:00'),
+(1, 6, '09:30:00', '11:30:00'),
+
+-- Timetables for Premium Plan
+(2, 0, '09:30:00', '11:30:00'),
+(2, 1, '14:00:00', '16:00:00'),
+(2, 2, '11:30:00', '13:30:00'),
+(2, 3, '16:00:00', '18:00:00'),
+(2, 4, '18:30:00', '20:30:00'),
+(2, 5, '12:00:00', '14:00:00'),
+(2, 6, '08:30:00', '10:30:00'),
+
+-- Timetables for Group Plan
+(3, 0, '13:00:00', '15:00:00'),
+(3, 1, '17:00:00', '19:00:00'),
+(3, 2, '10:30:00', '12:30:00'),
+(3, 3, '15:30:00', '17:30:00'),
+(3, 4, '09:00:00', '11:00:00'),
+(3, 5, '16:30:00', '18:30:00'),
+(3, 6, '11:00:00', '13:00:00');
+
+INSERT INTO [user] ([name], [surname], [date_of_birth], [phone_number], [email], [password], [profile_id])
+VALUES
+    ('John', 'Doe', '1990-01-01', '123456789', 'john.doe@example.com', 'password123', 1),
+    ('Jane', 'Smith', '1985-05-15', '987654321', 'jane.smith@example.com', 'pass456', 1),
+    ('Alice', 'Johnson', '1988-08-20', '555555555', 'alice.johnson@example.com', 'secure789', 1),
+    ('Bob', 'Williams', '1995-03-10', '111223344', 'bob.williams@example.com', 'userpass', 1),
+    ('Emily', 'Brown', '1982-12-05', '999888777', 'emily.brown@example.com', 'letmein123', 1),
+    ('David', 'Miller', '1998-07-18', '444433322', 'david.miller@example.com', 'mypassword', 1),
+    ('Sophia', 'Davis', '1987-09-25', '777766655', 'sophia.davis@example.com', 'p@ssword', 1),
+    ('Daniel', 'Wilson', '1993-06-30', '222211110', 'daniel.wilson@example.com', 'secret123', 1),
+    ('Olivia', 'Taylor', '1980-04-12', '666655544', 'olivia.taylor@example.com', 'adminpass', 1),
+    ('Michael', 'Anderson', '1991-11-08', '888877766', 'michael.anderson@example.com', 'access123', 1),
+    ('Ella', 'Jones', '1997-02-28', '333322221', 'ella.jones@example.com', 'userpass123', 1),
+    ('Matthew', 'Clark', '1984-10-14', '444455556', 'matthew.clark@example.com', 'securepass', 1),
+    ('Emma', 'Moore', '1996-06-22', '999988877', 'emma.moore@example.com', '123456789', 1),
+    ('Christopher', 'Lee', '1989-09-03', '777766655', 'chris.lee@example.com', 'letmein456', 1),
+    ('Grace', 'Turner', '1992-04-19', '888877766', 'grace.turner@example.com', 'mypassword789', 1),
+    ('Andrew', 'White', '1986-12-07', '555544443', 'andrew.white@example.com', 'p@ssword123', 1),
+    ('Madison', 'Baker', '1994-08-26', '666655544', 'madison.baker@example.com', 'secret456', 1),
+    ('Logan', 'Young', '1981-01-09', '111122223', 'logan.young@example.com', 'adminpass789', 1),
+    ('Ava', 'Cooper', '1999-07-15', '222233334', 'ava.cooper@example.com', 'access456', 1),
+    ('Joshua', 'Wright', '1983-05-31', '777788889', 'joshua.wright@example.com', 'password789', 1),
+    ('Aiden', 'Hill', '1990-11-17', '555566667', 'aiden.hill@example.com', 'letmein789', 1),
+    ('Sophie', 'Adams', '1988-03-02', '333344445', 'sophie.adams@example.com', 'secure123456', 1),
+    ('Liam', 'Nelson', '1995-10-10', '111122223', 'liam.nelson@example.com', 'mypassword123', 1),
+    ('Chloe', 'Carter', '1980-08-04', '666655544', 'chloe.carter@example.com', 'p@ssword456', 1),
+    ('Jackson', 'Ward', '1993-12-12', '999988877', 'jackson.ward@example.com', 'adminpass123', 1),
+    ('Harper', 'Fisher', '1987-06-18', '444455556', 'harper.fisher@example.com', 'access789', 1),
+    ('Caleb', 'Evans', '1991-02-25', '555544443', 'caleb.evans@example.com', 'password456', 1),
+    ('Addison', 'Reed', '1982-09-08', '777766655', 'addison.reed@example.com', 'letmein123456', 1),
+    ('Owen', 'Cole', '1998-05-14', '222233334', 'owen.cole@example.com', 'secure789012', 1),
+    ('Isabella', 'Woods', '1984-01-28', '888877766', 'isabella.woods@example.com', 'mypassword123456', 1);
