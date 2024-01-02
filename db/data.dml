@@ -3,9 +3,9 @@ GO
 
 INSERT INTO [plan] ([name], [description], [price], [type], [status])
 VALUES
-('Basic Plan', 'Access to basic facilities', 50.00, 'individual', 'active'),
-('Premium Plan', 'Full access to all facilities', 100.00, 'individual', 'active'),
-('Group Plan', 'Access for groups', 150.00, 'group', 'active');
+('tenis', '15 ve altı yaşındaki öğrenciler için tenis özel ders', 250.00, 'individual', 'active'),
+('voleybol', '20 ve üzeri yaşındaki öğrenciler için voleybol özel ders', 200.00, 'individual', 'active'),
+('futbol', '16-18 arası yaştakilere grup tenis eğitimi', 150.00, 'group', 'active');
 
 -- Insert sample data into the "timetable" table for each plan
 -- Each plan will have exactly 7 timetable entries for each day of the week
@@ -49,7 +49,7 @@ VALUES
     ('Sophia', 'Davis', '1987-09-25', '777766655', 'sophia.davis@example.com', 'p@ssword', 1),
     ('Daniel', 'Wilson', '1993-06-30', '222211110', 'daniel.wilson@example.com', 'secret123', 1),
     ('Olivia', 'Taylor', '1980-04-12', '666655544', 'olivia.taylor@example.com', 'adminpass', 1),
-    ('Michael', 'Anderson', '1991-11-08', '888877766', 'michael.anderson@example.com', 'access123', 1);
+    ('Michael', 'Anderson', '1991-11-08', '888877766', 'michael.anderson@example.com', 'access123', 1),
     ('Ella', 'Jones', '1997-02-28', '333322221', 'ella.jones@example.com', 'userpass123', 1),
     ('Matthew', 'Clark', '1984-10-14', '444455556', 'matthew.clark@example.com', 'securepass', 1),
     ('Emma', 'Moore', '1996-06-22', '999988877', 'emma.moore@example.com', '123456789', 1),
