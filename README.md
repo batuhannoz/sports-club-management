@@ -13,7 +13,7 @@ Simple application for sport club management
 - [x] Authentication With Username and Password
 - [x] User Identification and Authorization (Read/Enter/Update/Delete) with Admin User
 - [x] Back up & Restore DB
-- [ ] PDF
+- [x] PDF
 - [ ] DVD
 
 Use [draw.io](https://app.diagrams.net/) to design and edit entity relationship diagram ([ER_Diagram.drawio](https://github.com/batuhannoz/sports-club-management/blob/main/ER_Diagram.drawio))
@@ -26,4 +26,12 @@ Use [draw.io](https://app.diagrams.net/) to design and edit entity relationship 
 ```bash
  docker run -v backups:/var/opt/mssql/backups -p 1433:1433 -d sports-club-db
 ```
-    
+
+Just leave one star is enough 😉 
+
+!!! MISSING import/export !!! 
+
+Fatih Kayaalp Düzce Üniversitesi BM309 
+Bir spor salonuna gelen kişilerin geliş gidiş takvim bilgilerinden yaptıkları sporun detay kayıtlarına kadar bilgilerini tutacak olan bir veritabanı projesi
+VTYS Proje
+
