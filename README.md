@@ -1,37 +1,110 @@
-# sports-club-management
-Simple application for sport club management
+# Sports Club Management System
 
-### Goals: 
+A comprehensive desktop application for managing sports club operations, including member management, subscription plans, timetables, and health status tracking.
 
-- [x] Entity-Relationship Model
-- [x] Schema Diagram
-- [x] Min 4 Tables
-- [x] Min 3 Triggers
-- [x] Min 2 Stored Procedure
-- [x] Export Results as pdf/doc/xls
-- [ ] Import Data From Files from txt/csv/xls
-- [x] Authentication With Username and Password
-- [x] User Identification and Authorization (Read/Enter/Update/Delete) with Admin User
-- [x] Back up & Restore DB
-- [x] PDF
-- [ ] DVD
+## Features
 
-Use [draw.io](https://app.diagrams.net/) to design and edit entity relationship diagram ([ER_Diagram.drawio](https://github.com/batuhannoz/sports-club-management/blob/main/ER_Diagram.drawio))
+### User Management
+- User registration and authentication
+- Profile management (personal information, contact details)
+- Role-based access control with different permission levels
+- Address management for members
 
-### Build and run sql server in a docker container
-##### /db
+### Subscription Management
+- Multiple subscription plan types
+- Plan creation and management
+- Active subscription tracking
+- Payment handling
+- Subscription status monitoring
+
+### Schedule Management
+- Weekly timetable for different plans
+- Group activity scheduling
+- Customizable time slots
+
+### Health Tracking
+- Member health status monitoring
+- Health records management
+
+### Administrative Features
+- User profile management
+- Permission management
+- Database backup and restore
+- Member search functionality
+- Comprehensive reporting
+
+## Technology Stack
+
+- **Frontend**: Windows Forms (.NET)
+- **Backend**: C#
+- **Database**: Microsoft SQL Server
+- **Containerization**: Docker
+
+## Getting Started
+
+### Prerequisites
+
+- Docker
+- .NET Framework
+- Windows Forms compatible environment
+
+### Database Setup
+
+1. Navigate to the `/db` directory
+2. Build the Docker image:
 ```bash
- docker build -t sports-club-db .
+docker build -t sports-club-db .
 ```
+3. Run the container:
 ```bash
- docker run -v backups:/var/opt/mssql/backups -p 1433:1433 -d sports-club-db
+docker run -v backups:/var/opt/mssql/backups -p 1433:1433 -d sports-club-db
 ```
 
-Just leave one star is enough 😉 
+### Application Setup
 
-!!! MISSING import/export !!! 
+1. Clone the repository
+2. Open the solution in Visual Studio
+3. Build and run the application
+4. Default admin credentials:
+   - Username: admin@admin.com
+   - Password: admin
 
-Fatih Kayaalp Düzce Üniversitesi BM309 
-Bir spor salonuna gelen kişilerin geliş gidiş takvim bilgilerinden yaptıkları sporun detay kayıtlarına kadar bilgilerini tutacak olan bir veritabanı projesi
-VTYS Proje
+## Project Structure
 
+- `/app`: Contains the main application code
+  - User interface components
+  - Business logic
+  - Data access layer
+- `/db`: Database scripts and Docker configuration
+  - SQL scripts
+  - Schema definitions
+  - Stored procedures
+  - Triggers
+
+## Database Schema
+
+The system uses a relational database with the following key entities:
+- Users
+- Profiles
+- Permissions
+- Plans
+- Subscriptions
+- Health Records
+- Addresses
+- Timetables
+
+## Security Features
+
+- Password-protected user accounts
+- Role-based access control
+- Permission-based feature access
+- Secure database connections
+
+## Acknowledgments
+
+- Fatih Kayaalp
+- Düzce University
+- Course: BM309 Database Management Systems
+
+---
+*Note: This project was developed as part of a database management systems course at Düzce University.*
